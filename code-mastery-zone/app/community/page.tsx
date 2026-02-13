@@ -46,7 +46,7 @@ export default async function CommunityPage() {
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {discussions.map((discussion) => (
-                            <DiscussionCard key={discussion.id} discussion={discussion} />
+                            <DiscussionCard key={discussion._id} discussion={discussion} />
                         ))}
                     </div>
 

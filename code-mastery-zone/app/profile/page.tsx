@@ -1,19 +1,16 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { useSession } from 'next-auth/react';
-import { discussions } from '../lib/data';
+import { getDiscussions, Discussion } from '../lib/data';
 
 export default function ProfilePage() {
     const { data: session } = useSession();
     const [isEditing, setIsEditing] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-
-    const userDiscussions = discussions.filter(
-        d => d.user.name === (session?.user?.name || 'Guest User')
-    );
+    const [userDiscussions, setUserDiscussions] = useState<Discussion[]>([]);
 
     // Mock state for form (in a real app, this would come from an API/Session)
     const [formData, setFormData] = useState({
@@ -25,7 +22,7 @@ export default function ProfilePage() {
     });
 
     // Update form data when session loads
-    React.useEffect(() => {
+    useEffect(() => {
         if (session?.user) {
             setFormData(prev => ({
                 ...prev,
@@ -34,6 +31,30 @@ export default function ProfilePage() {
             }));
         }
     }, [session]);
+
+    // Fetch user discussions
+    useEffect(() => {
+        const fetchUserDiscussions = async () => {
+            try {
+                const allDiscussions = await getDiscussions();
+                // Filter discussions by user name (mock logic, ideally by ID)
+                const filtered = allDiscussions.filter(
+                    d => d.user.name === (session?.user?.name || 'Guest User')
+                );
+                setUserDiscussions(filtered);
+            } catch (error) {
+                console.error("Error fetching discussions", error);
+            }
+        };
+
+        if (session?.user) {
+            fetchUserDiscussions();
+        } else {
+            // Fetch anyway for guest user demo
+            fetchUserDiscussions();
+        }
+    }, [session]);
+
 
     const handleSave = () => {
         setIsLoading(true);
@@ -237,20 +258,20 @@ export default function ProfilePage() {
                         <div className="grid grid-cols-1 gap-6">
                             {userDiscussions.length > 0 ? (
                                 userDiscussions.map((discussion) => (
-                                    <div key={discussion.id} className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow group">
+                                    <div key={discussion._id || Math.random().toString()} className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow group">
                                         <div className="flex justify-between items-start mb-4">
                                             <div className="flex items-center gap-2">
                                                 <span className="px-3 py-1 bg-slate-100 text-slate-600 text-xs font-bold rounded-full uppercase tracking-wider">
                                                     {discussion.category}
                                                 </span>
-                                                <span className="text-xs text-slate-400">{discussion.time}</span>
+                                                <span className="text-xs text-slate-400">{discussion.createdAt ? new Date(discussion.createdAt).toLocaleDateString() : discussion.time || 'Recently'}</span>
                                             </div>
                                             <div className="flex gap-4 text-slate-400 text-xs font-semibold">
                                                 <span className="flex items-center gap-1.5 group-hover:text-indigo-600 transition-colors">
                                                     <i className="far fa-heart"></i> {discussion.likes}
                                                 </span>
                                                 <span className="flex items-center gap-1.5 group-hover:text-indigo-600 transition-colors">
-                                                    <i className="far fa-comment"></i> {discussion.comments}
+                                                    <i className="far fa-comment"></i> {discussion.comments?.length || 0}
                                                 </span>
                                             </div>
                                         </div>

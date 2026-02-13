@@ -11,32 +11,82 @@ export default function DiscussionCard({ discussion }: DiscussionCardProps) {
   // Likes
   const [liked, setLiked] = useState(false);
   const [likes, setLikes] = useState(discussion.likes);
+  const [isLiking, setIsLiking] = useState(false);
 
-  const handleLike = () => {
-    if (liked) {
-      setLikes(l => l - 1);
-    } else {
-      setLikes(l => l + 1);
-    }
+  const handleLike = async () => {
+    if (isLiking) return; // Prevent double-clicks
+
+    setIsLiking(true);
+
+    // Optimistic UI update
+    const previousLiked = liked;
+    const previousLikes = likes;
+
     setLiked(!liked);
+    setLikes(liked ? likes - 1 : likes + 1);
+
+    try {
+      const res = await fetch(`http://localhost:8000/api/discussions/${discussion._id}/like`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' }
+      });
+
+      if (!res.ok) throw new Error('Failed to update like');
+
+      const data = await res.json();
+      setLikes(data.likes);
+      setLiked(data.liked);
+    } catch (error) {
+      console.error('Error toggling like:', error);
+      // Revert on error
+      setLiked(previousLiked);
+      setLikes(previousLikes);
+    } finally {
+      setIsLiking(false);
+    }
   };
 
   // Comments
   const [comments, setComments] = useState(discussion.comments);
   const [showCommentInput, setShowCommentInput] = useState(false);
   const [commentText, setCommentText] = useState('');
+  const [isCommenting, setIsCommenting] = useState(false);
 
-  const handleAddComment = () => {
-    if (!commentText.trim()) return;
+  const handleAddComment = async () => {
+    if (!commentText.trim() || isCommenting) return;
 
-    setComments(c => c + 1);
-    setCommentText('');
-    setShowCommentInput(false);
+    setIsCommenting(true);
+
+    // Optimistic UI update
+    const previousComments = comments;
+    setComments(comments + 1);
+
+    try {
+      const res = await fetch(`http://localhost:8000/api/discussions/${discussion._id}/comments`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ content: commentText })
+      });
+
+      if (!res.ok) throw new Error('Failed to add comment');
+
+      const data = await res.json();
+      setComments(data.comments);
+      setCommentText('');
+      setShowCommentInput(false);
+    } catch (error) {
+      console.error('Error adding comment:', error);
+      // Revert on error
+      setComments(previousComments);
+      alert('Failed to add comment. Please try again.');
+    } finally {
+      setIsCommenting(false);
+    }
   };
 
   return (
     <div className="bg-white p-6 rounded-2xl border border-gray-100 hover:border-indigo-100 hover:shadow-xl hover:shadow-indigo-500/5 transition-all group">
-      
+
       {/* Header */}
       <div className="flex items-center gap-3 mb-4">
         <img
@@ -66,13 +116,13 @@ export default function DiscussionCard({ discussion }: DiscussionCardProps) {
       {/* Actions */}
       <div className="flex items-center justify-between border-t border-gray-50 pt-4">
         <div className="flex items-center gap-4">
-          
+
           {/* Like */}
           <button
             onClick={handleLike}
-            className={`flex items-center gap-1.5 transition-all ${
-              liked ? 'text-rose-500' : 'text-gray-500 hover:text-rose-500'
-            }`}
+            disabled={isLiking}
+            className={`flex items-center gap-1.5 transition-all ${liked ? 'text-rose-500' : 'text-gray-500 hover:text-rose-500'
+              } ${isLiking ? 'cursor-wait opacity-70' : ''}`}
           >
             <i className={`${liked ? 'fas' : 'far'} fa-heart`}></i>
             <span className="text-sm font-medium">{likes}</span>
@@ -108,9 +158,10 @@ export default function DiscussionCard({ discussion }: DiscussionCardProps) {
           />
           <button
             onClick={handleAddComment}
-            className="px-4 py-2 text-sm font-semibold text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition"
+            disabled={isCommenting}
+            className={`px-4 py-2 text-sm font-semibold text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition ${isCommenting ? 'cursor-wait opacity-70' : ''}`}
           >
-            Post
+            {isCommenting ? 'Posting...' : 'Post'}
           </button>
         </div>
       )}
