@@ -1,10 +1,10 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
+import Header from '@/app/components/Header';
+import Footer from '@/app/components/Footer';
 import { useSession } from 'next-auth/react';
-import { getDiscussions, Discussion } from '../lib/data';
+import { getDiscussions, Discussion } from '@/app/lib/data';
 
 export default function ProfilePage() {
     const { data: session } = useSession();
@@ -271,7 +271,7 @@ export default function ProfilePage() {
                                                     <i className="far fa-heart"></i> {discussion.likes}
                                                 </span>
                                                 <span className="flex items-center gap-1.5 group-hover:text-indigo-600 transition-colors">
-                                                    <i className="far fa-comment"></i> {discussion.comments?.length || 0}
+                                                    <i className="far fa-comment"></i> {discussion.comments ?? 0}
                                                 </span>
                                             </div>
                                         </div>

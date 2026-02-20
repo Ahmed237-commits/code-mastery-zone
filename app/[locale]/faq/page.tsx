@@ -26,7 +26,7 @@ export default async function FAQPage() {
                 <div className="max-w-3xl mx-auto space-y-4">
                     {faqs.map((faq) => (
                         <div
-                            key={faq.id}
+                            key={faq._id}
                             className="bg-white rounded-2xl border border-gray-100 p-6 md:p-8 hover:border-indigo-100 hover:shadow-lg hover:shadow-indigo-500/5 transition-all group"
                         >
                             <h3 className="text-xl font-bold text-slate-900 mb-4 flex items-center gap-4">
