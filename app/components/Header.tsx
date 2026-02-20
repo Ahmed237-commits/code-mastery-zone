@@ -33,7 +33,7 @@ export default function Header() {
 
   return (
     <header
-      className={`fixed w-full top-0 z-50 transition-all duration-300 border-b ${isScrolled
+      className={` w-full top-0 z-50 transition-all duration-300 border-b ${isScrolled
         ? 'bg-white/95 backdrop-blur-md shadow-sm py-2 border-slate-200/50'
         : 'bg-white/80 backdrop-blur-md border-transparent py-4'
         }`}
