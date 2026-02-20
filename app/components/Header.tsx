@@ -57,12 +57,15 @@ export default function Header() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`text-[15px] font-medium transition-colors relative group ${isActive ? 'text-purple-600' : 'text-slate-600 hover:text-purple-600'
+                className={`text-[14px] font-bold px-4 py-2 rounded-xl transition-all relative group ${isActive
+                  ? 'text-indigo-600 bg-indigo-50'
+                  : 'text-slate-600 hover:text-indigo-600 hover:bg-slate-50'
                   }`}
               >
                 {link.name}
-                <span className={`absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-pink-500 to-purple-500 rounded-full transition-all duration-300 ${isActive ? 'w-full' : 'w-0 group-hover:w-full'
-                  }`}></span>
+                {isActive && (
+                  <span className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-indigo-600 rounded-full"></span>
+                )}
               </Link>
             );
           })}
@@ -147,10 +150,11 @@ export default function Header() {
       </div>
 
       {/* Mobile Menu */}
-      <div className={`lg:hidden absolute top-full left-0 w-full bg-white border-b border-gray-100 shadow-xl transition-all duration-300 overflow-hidden ${isMobileMenuOpen ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
+      <div className={`lg:hidden absolute top-full left-0 w-full bg-white/98 backdrop-blur-xl border-b border-gray-100 shadow-2xl transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] overflow-hidden ${isMobileMenuOpen ? 'max-h-[600px] opacity-100' : 'max-h-0 opacity-0'
         }`}>
-        <div className="flex flex-col p-6 space-y-4">
-          <div className="flex justify-start">
+        <div className="flex flex-col p-6 space-y-3">
+          <div className="flex justify-between items-center pb-4 border-b border-gray-50 mb-4">
+            <span className="text-sm font-bold text-slate-400 uppercase tracking-widest">{t('menu')}</span>
             <LanguageSwitcher />
           </div>
           {navLinks.map((link) => {
@@ -159,51 +163,74 @@ export default function Header() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`text-lg font-medium ${isActive ? 'text-purple-600' : 'text-slate-600'
+                className={`flex items-center justify-between px-5 py-3.5 rounded-2xl text-[17px] font-semibold transition-all duration-300 ${isActive
+                  ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-200 translate-x-1'
+                  : 'text-slate-600 hover:bg-slate-50 hover:text-indigo-600'
                   }`}
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 {link.name}
+                {isActive && <i className="fas fa-chevron-right text-xs"></i>}
               </Link>
             );
           })}
-          {session ? (
-            <>
-              <div className="flex items-center gap-3 py-2 px-2 bg-slate-50 rounded-lg">
-                <div className="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center overflow-hidden border border-indigo-200">
-                  {session.user?.image ? (
-                    <img
-                      src={session.user.image}
-                      alt={session.user.name || 'User'}
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <span className="text-indigo-600 font-bold text-lg">
-                      {session.user?.name?.charAt(0) || 'U'}
-                    </span>
-                  )}
+
+          <div className="pt-4 mt-2 space-y-3 border-t border-gray-50">
+            {session ? (
+              <>
+                <div className="flex items-center gap-4 p-4 bg-slate-50/80 rounded-2xl border border-slate-100">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center overflow-hidden shadow-md">
+                    {session.user?.image ? (
+                      <img
+                        src={session.user.image}
+                        alt={session.user.name || 'User'}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <span className="text-white font-bold text-xl">
+                        {session.user?.name?.charAt(0) || 'U'}
+                      </span>
+                    )}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="font-bold text-slate-800 truncate">{session.user?.name}</p>
+                    <p className="text-xs text-slate-500 truncate">{session.user?.email}</p>
+                  </div>
                 </div>
-                <div>
-                  <p className="font-semibold text-slate-800">{session.user?.name}</p>
-                  <p className="text-xs text-slate-500 truncate max-w-[150px]">{session.user?.email}</p>
+                <div className="grid grid-cols-2 gap-3">
+                  <Link href="/dashboard" className="flex items-center justify-center gap-2 bg-white border border-slate-100 py-3 rounded-2xl text-slate-700 font-bold text-sm shadow-sm hover:bg-slate-50" onClick={() => setIsMobileMenuOpen(false)}>
+                    <i className="fas fa-chart-line text-indigo-500"></i> {t('dashboard')}
+                  </Link>
+                  <Link href="/profile" className="flex items-center justify-center gap-2 bg-white border border-slate-100 py-3 rounded-2xl text-slate-700 font-bold text-sm shadow-sm hover:bg-slate-50" onClick={() => setIsMobileMenuOpen(false)}>
+                    <i className="fas fa-user text-purple-500"></i> {t('profile')}
+                  </Link>
                 </div>
+                <button
+                  onClick={() => { setIsMobileMenuOpen(false); signOut({ callbackUrl: "/" }); }}
+                  className="w-full py-3.5 rounded-2xl bg-red-50 text-red-600 font-bold text-sm hover:bg-red-100 transition-colors flex items-center justify-center gap-2"
+                >
+                  <i className="fas fa-sign-out-alt"></i> Sign Out
+                </button>
+              </>
+            ) : (
+              <div className="flex flex-col gap-3">
+                <Link
+                  href="/signIn"
+                  className="w-full py-4 rounded-2xl bg-slate-50 text-slate-700 font-bold text-center hover:bg-slate-100 transition-colors"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  {t('signIn')}
+                </Link>
+                <Link
+                  href="/signUp"
+                  className="w-full py-4 rounded-2xl bg-indigo-600 text-white font-bold text-center shadow-lg shadow-indigo-100 hover:bg-indigo-700 transition-colors"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  {t('signUp')}
+                </Link>
               </div>
-              <Link href="/dashboard" className="text-slate-700 font-medium py-2 hover:text-indigo-600" onClick={() => setIsMobileMenuOpen(false)}>
-                <i className="fas fa-chart-line mr-2"></i> {t('dashboard')}
-              </Link>
-              <Link href="/profile" className="text-slate-700 font-medium py-2 hover:text-indigo-600" onClick={() => setIsMobileMenuOpen(false)}>
-                <i className="fas fa-user mr-2"></i> {t('profile')}
-              </Link>
-              <button onClick={() => { setIsMobileMenuOpen(false); signOut({ callbackUrl: "/" }); }} className="text-red-600 font-medium py-2 text-left">
-                <i className="fas fa-sign-out-alt mr-2"></i> Sign Out
-              </button>
-            </>
-          ) : (
-            <>
-              <Link href="/signIn" className="text-slate-700 font-medium pb-2" onClick={() => setIsMobileMenuOpen(false)}>{t('signIn')}</Link>
-              <Link href="/signUp" className="text-indigo-600 font-bold" onClick={() => setIsMobileMenuOpen(false)}>{t('signUp')}</Link>
-            </>
-          )}
+            )}
+          </div>
         </div>
       </div>
     </header>

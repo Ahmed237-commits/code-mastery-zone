@@ -1,147 +1,3 @@
-// "use client";
-// import React, { useState, useRef, useEffect } from "react";
-// import { FaRobot, FaUser, FaPaperPlane, FaTimes, FaCommentDots } from "react-icons/fa";
-
-// export default function ChatBot() {
-//   const [open, setOpen] = useState(false);
-//   const [messages, setMessages] = useState<{ time: string; from: "user" | "bot"; text: string }[]>([]);
-//   const [input, setInput] = useState("");
-//   const [loading, setLoading] = useState(false);
-//   const messagesEndRef = useRef<HTMLDivElement>(null);
-
-//   const scrollToBottom = () => messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-//   useEffect(() => { scrollToBottom(); }, [messages, open]);
-
-//   const sendMessage = async () => {
-//     if (!input.trim()) return;
-//     const userMessage = input;
-//     const timestamp = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-
-//     setMessages(prev => [...prev, { from: "user", text: userMessage, time: timestamp }]);
-//     setInput(""); 
-//     setLoading(true);
-
-//     try {
-//       const response = await fetch("http://localhost:8000/chat", {
-//         method: "POST",
-//         headers: { "Content-Type": "application/json" },
-//         body: JSON.stringify({ message: userMessage }),
-//       });
-//       if (!response.ok) throw new Error(`Server error: ${response.status}`);
-//       const data = await response.json();
-//       const botReply = data.reply || "Sorry, I couldn't generate a response.";
-//       const botTimestamp = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-//       setMessages(prev => [...prev, { from: "bot", text: botReply, time: botTimestamp }]);
-//     } catch {
-//       const botTimestamp = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-//       setMessages(prev => [...prev, { from: "bot", text: "❌ Failed to connect to server. Is it running?", time: botTimestamp }]);
-//     } finally { setLoading(false); }
-//   };
-
-//   return (
-//     <div className="relative">
-//       {/* Chat window */}
-//      <div
-//         className={`transition-all duration-300 ease-in-out transform origin-bottom-right ${
-//           open ? "scale-100 opacity-100 translate-y-0" : "scale-0 opacity-0 translate-y-10 pointer-events-none"
-//         } w-[350px] h-[500px] bg-white/90 backdrop-blur-md border border-white/20 rounded-2xl shadow-2xl flex flex-col overflow-hidden mb-4`}
-//       >
-//         <div className="w-[350px] h-[500px] bg-white/90 backdrop-blur-md border border-white/20 rounded-2xl shadow-2xl flex flex-col overflow-hidden">
-
-//           {/* Header */}
-//           <div className="bg-gradient-to-r from-[#5A4A42] to-[#8B735B] text-white p-4 flex justify-between items-center shadow-md z-10">
-//             <div className="flex items-center gap-3">
-//               <div className="bg-white/20 p-2 rounded-full">
-//                 <FaRobot className="text-xl" />
-//               </div>
-//               <div>
-//                 <h3 className="text-lg">AI Assistant</h3>
-//                 <p className="text-xs text-white/80 flex items-center gap-1">
-//                   <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span> Online
-//                 </p>
-//               </div>
-//             </div>
-//             <button onClick={() => setOpen(false)} className="text-white/80 hover:text-white hover:bg-white/10 p-2 rounded-full z-20">
-//               <FaTimes />
-//             </button>
-//           </div>
-
-//           {/* Messages */}
-//           <div className="absolute flex-1 p-4 overflow-y-auto top-20 bottom-20 left-0 right-0 space-y-4 bg-gray-50/50 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
-//             {messages.length === 0 && (
-//               <div className="text-center text-gray-500 mt-1">
-//                 <FaRobot className="text-4xl mx-auto mb-2 text-gray-300" />
-//                 <p>Hello! How can I help you today?</p>
-//               </div>
-//             )}
-
-//             {messages.map((msg, idx) => (
-//               <div key={idx} className={`flex gap-2 ${msg.from === "user" ? "flex-row-reverse" : "flex-row"}`}>
-//                 <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${msg.from === "user" ? "bg-[#5A4A42] text-white" : "bg-gray-200 text-gray-600"}`}>
-//                   {msg.from === "user" ? <FaUser size={12} /> : <FaRobot size={14} />}
-//                 </div>
-//                 <div className={`max-w-[80%] flex flex-col ${msg.from === "user" ? "items-end" : "items-start"}`}>
-//                   <div className={`p-3 rounded-2xl text-sm shadow-sm ${msg.from === "user" ? "bg-[#5A4A42] text-white rounded-tr-none" : "bg-white border border-gray-100 text-gray-800 rounded-tl-none"}`}>
-//                     {msg.text}
-//                   </div>
-//                   <span className="text-[10px] text-gray-400 mt-1 px-1">{msg.time}</span>
-//                 </div>
-//               </div>
-//             ))}
-
-//             {loading && (
-//               <div className="flex gap-2">
-//                 <div className="w-8 h-8 rounded-full bg-gray-200 text-gray-600 flex items-center justify-center flex-shrink-0"><FaRobot size={14} /></div>
-//                 <div className="bg-white border border-gray-100 p-3 rounded-2xl rounded-tl-none shadow-sm">
-//                   <div className="flex gap-1">
-//                     <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></span>
-//                     <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: "150ms" }}></span>
-//                     <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: "300ms" }}></span>
-//                   </div>
-//                 </div>
-//               </div>
-//             )}
-//             <div ref={messagesEndRef} />
-//           </div>
-
-//           {/* Input */}
-//           <div className="p-3 bg-white border-t border-gray-100">
-//             <div className="flex gap-2 items-center bg-gray-50 border border-gray-200 rounded-full px-4 py-2 focus-within:ring-2 focus-within:ring-[#5A4A42]/20 focus-within:border-[#5A4A42] transition-all">
-//               <input
-//                 type="text"
-//                 className="flex-1 bg-transparent focus:outline-none text-sm text-gray-700 placeholder-gray-400"
-//                 placeholder="Type your message..."
-//                 value={input}
-//                 onChange={(e) => setInput(e.target.value)}
-//                 onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-//                 disabled={loading}
-//               />
-//               <button
-//                 onClick={sendMessage}
-//                 disabled={loading || !input.trim()}
-//                 className={`p-2 rounded-full transition-all ${loading || !input.trim() ? "text-gray-300 cursor-not-allowed" : "text-[#5A4A42] hover:bg-[#5A4A42]/10 active:scale-95"}`}
-//               >
-//                 <FaPaperPlane />
-//               </button>
-//             </div>
-//             <div className="text-center mt-1"><span className="text-[10px] text-gray-400">Powered by Gemini AI</span></div>
-//           </div>
-//         </div>
-//       </div>
-
-//       {/* Chat toggle button */}
-//       <button
-//         onClick={() => setOpen(!open)}
-//         className={`fixed bottom-6 right-6 z-50 group flex items-center justify-center w-14 h-14 rounded-full shadow-lg transition-all duration-300 hover:scale-110
-//           ${open ? "bg-gray-200 text-gray-600 rotate-90" : "bg-[#5A4A42] text-white hover:bg-[#4a3b34]"}`}
-//       >
-//         {open ? <FaTimes className="text-xl" /> : <FaCommentDots className="text-2xl" />}
-//         {!open && <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-white"></span>}
-//       </button>
-//     </div>
-//   );
-// }
-
 "use client";
 import React, { useState, useRef, useEffect } from "react";
 import {
@@ -223,75 +79,77 @@ export default function ChatBot() {
     <div className="relative">
       {/* Chat window */}
       <div
-        className={`transition-all duration-300 ease-in-out transform origin-bottom-right ${
-          open
-            ? "scale-100 opacity-100 translate-y-0"
-            : "scale-0 opacity-0 translate-y-10 pointer-events-none"
-        } w-[350px] h-[500px] bg-white/90 backdrop-blur-md border border-white/20 rounded-2xl shadow-2xl flex flex-col overflow-hidden mb-4 fixed bottom-24 right-6 z-40`}
+        className={`transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] transform origin-top-right sm:origin-bottom-right ${open
+          ? "scale-100 opacity-100 translate-y-0"
+          : "scale-95 opacity-0 -translate-y-10 sm:translate-y-10 pointer-events-none"
+          } fixed top-[85px] sm:top-auto sm:bottom-24 right-4 sm:right-6 z-40 w-[calc(100%-2rem)] sm:w-[380px] h-[500px] max-h-[calc(100vh-120px)] bg-white/95 backdrop-blur-xl border border-white/20 rounded-3xl shadow-[0_20px_50px_rgba(79,70,229,0.15)] flex flex-col overflow-hidden mb-4`}
       >
         {/* Header */}
-        <div className="bg-gradient-to-r from-[#5A4A42] to-[#8B735B] text-white p-4 flex justify-between items-center shadow-md">
-          <div className="flex items-center gap-3">
-            <div className="bg-white/20 p-2 rounded-full">
-              <FaRobot className="text-xl" />
+        <div className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white p-5 flex justify-between items-center shadow-lg relative overflow-hidden">
+          {/* Decorative Background Elements */}
+          <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16 blur-2xl"></div>
+          <div className="absolute bottom-0 left-0 w-24 h-24 bg-purple-400/20 rounded-full -ml-12 -mb-12 blur-xl"></div>
+
+          <div className="flex items-center gap-3 relative z-10">
+            <div className="bg-white/20 p-2.5 rounded-2xl backdrop-blur-md border border-white/30 shadow-inner">
+              <FaRobot className="text-xl animate-pulse" />
             </div>
             <div>
-              <h3 className="text-lg">AI Assistant</h3>
-              <p className="text-xs text-white/80 flex items-center gap-1">
-                <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+              <h3 className="text-lg font-bold tracking-tight">AI Assistant</h3>
+              <p className="text-xs text-white/90 flex items-center gap-1.5 font-medium">
+                <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse shadow-[0_0_8px_rgba(74,222,128,0.8)]"></span>
                 Online
               </p>
             </div>
           </div>
           <button
             onClick={() => setOpen(false)}
-            className="hover:bg-white/10 p-2 rounded-full"
+            className="hover:bg-white/20 p-2.5 rounded-xl transition-colors duration-200 group relative z-10"
           >
-            <FaTimes />
+            <FaTimes className="group-hover:rotate-90 transition-transform duration-300" />
           </button>
         </div>
 
         {/* Messages */}
-        <div className="flex-1 p-4 overflow-y-auto space-y-4 bg-gray-50/50 scrollbar-thin scrollbar-thumb-gray-300">
+        <div className="flex-1 p-5 overflow-y-auto space-y-6 bg-gradient-to-b from-gray-50/50 to-white/50 scrollbar-thin scrollbar-thumb-indigo-200">
           {messages.length === 0 && (
-            <div className="text-center text-gray-500 mt-4">
-              <FaRobot className="text-4xl mx-auto mb-2 text-gray-300" />
-              <p>Hello! How can I help you today?</p>
+            <div className="text-center py-12 flex flex-col items-center animate-fade-in">
+              <div className="w-20 h-20 bg-indigo-50 rounded-full flex items-center justify-center mb-4 border-2 border-dashed border-indigo-100">
+                <FaRobot className="text-4xl text-indigo-300" />
+              </div>
+              <h4 className="text-slate-800 font-bold mb-1">Welcome!</h4>
+              <p className="text-slate-500 text-sm max-w-[200px]">I can help you with your courses and learning journey.</p>
             </div>
           )}
 
           {messages.map((msg, idx) => (
             <div
               key={idx}
-              className={`flex gap-2 ${
-                msg.from === "user" ? "flex-row-reverse" : "flex-row"
-              }`}
+              className={`flex gap-3 ${msg.from === "user" ? "flex-row-reverse" : "flex-row"
+                } animate-message-in`}
             >
               <div
-                className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                  msg.from === "user"
-                    ? "bg-[#5A4A42] text-white"
-                    : "bg-gray-200 text-gray-600"
-                }`}
+                className={`w-9 h-9 rounded-2xl flex items-center justify-center shrink-0 shadow-sm transition-transform hover:scale-110 ${msg.from === "user"
+                  ? "bg-indigo-600 text-white"
+                  : "bg-white border border-indigo-50 text-indigo-600"
+                  }`}
               >
-                {msg.from === "user" ? <FaUser size={12} /> : <FaRobot size={14} />}
+                {msg.from === "user" ? <FaUser size={14} /> : <FaRobot size={18} />}
               </div>
 
               <div
-                className={`max-w-[80%] flex flex-col ${
-                  msg.from === "user" ? "items-end" : "items-start"
-                }`}
+                className={`max-w-[80%] flex flex-col ${msg.from === "user" ? "items-end" : "items-start"
+                  }`}
               >
                 <div
-                  className={`p-3 rounded-2xl text-sm shadow-sm ${
-                    msg.from === "user"
-                      ? "bg-[#5A4A42] text-white rounded-tr-none"
-                      : "bg-white border rounded-tl-none"
-                  }`}
+                  className={`p-4 rounded-2xl text-[14px] leading-relaxed shadow-sm transition-all duration-300 ${msg.from === "user"
+                    ? "bg-indigo-600 text-white rounded-tr-none hover:shadow-indigo-200"
+                    : "bg-white text-slate-700 border border-indigo-50 rounded-tl-none hover:shadow-gray-200"
+                    }`}
                 >
                   {msg.text}
                 </div>
-                <span className="text-[10px] text-gray-400 mt-1">
+                <span className="text-[10px] text-slate-400 mt-1.5 font-medium px-1">
                   {msg.time}
                 </span>
               </div>
@@ -299,15 +157,15 @@ export default function ChatBot() {
           ))}
 
           {loading && (
-            <div className="flex gap-2">
-              <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center">
-                <FaRobot size={14} />
+            <div className="flex gap-3 animate-message-in">
+              <div className="w-9 h-9 bg-white border border-indigo-50 rounded-2xl flex items-center justify-center text-indigo-600 shadow-sm shrink-0">
+                <FaRobot size={18} className="animate-pulse" />
               </div>
-              <div className="bg-white border p-3 rounded-2xl rounded-tl-none">
-                <div className="flex gap-1">
-                  <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></span>
-                  <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce [animation-delay:150ms]"></span>
-                  <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce [animation-delay:300ms]"></span>
+              <div className="bg-white border border-indigo-50 p-4 rounded-2xl rounded-tl-none shadow-sm">
+                <div className="flex gap-1.5">
+                  <span className="w-2 h-2 bg-indigo-400 rounded-full animate-bounce [animation-duration:1s]"></span>
+                  <span className="w-2 h-2 bg-indigo-400 rounded-full animate-bounce [animation-duration:1s] [animation-delay:200ms]"></span>
+                  <span className="w-2 h-2 bg-indigo-400 rounded-full animate-bounce [animation-duration:1s] [animation-delay:400ms]"></span>
                 </div>
               </div>
             </div>
@@ -317,37 +175,42 @@ export default function ChatBot() {
         </div>
 
         {/* Input */}
-        <div className="p-3 bg-white border-t">
-          <div className="flex gap-2 items-center bg-gray-50 border rounded-full px-4 py-2 focus-within:ring-2 focus-within:ring-[#5A4A42]/20">
+        <div className="p-4 bg-white border-t border-indigo-50/50 backdrop-blur-md">
+          <div className="flex gap-2 items-center bg-gray-50 border border-indigo-100 rounded-2xl px-4 py-3 focus-within:ring-4 focus-within:ring-indigo-500/10 focus-within:border-indigo-400/50 transition-all duration-300">
             <input
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && sendMessage()}
               disabled={loading}
-              placeholder="Type your message..."
-              className="flex-1 bg-transparent outline-none text-sm"
+              placeholder="How can I help you today?"
+              className="flex-1 bg-transparent outline-none text-sm text-slate-700 placeholder:text-slate-400"
             />
             <button
               onClick={sendMessage}
               disabled={loading || !input.trim()}
-              className="text-[#5A4A42] disabled:text-gray-300"
+              className="text-indigo-600 disabled:text-gray-300 hover:scale-110 active:scale-95 transition-all duration-200 p-1"
             >
-              <FaPaperPlane />
+              <FaPaperPlane className={loading ? "opacity-30" : "opacity-100"} />
             </button>
           </div>
+          <p className="text-[10px] text-center text-slate-400 mt-3 font-medium">
+            AI Assistant may provide inaccurate info.
+          </p>
         </div>
       </div>
 
       {/* Toggle button */}
       <button
         onClick={() => setOpen(!open)}
-        className={`fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full shadow-lg transition-all ${
-          open
-            ? "bg-gray-200 text-gray-600 rotate-90"
-            : "bg-[#5A4A42] text-white hover:bg-[#4a3b34]"
-        }`}
+        className={`fixed bottom-6 right-6 z-40 w-16 h-16 rounded-3xl shadow-[0_10px_30px_rgba(79,70,229,0.3)] transition-all duration-500 group overflow-hidden ${open
+          ? "bg-slate-800 text-white rotate-90 scale-90"
+          : "bg-indigo-600 text-white hover:bg-indigo-700 hover:scale-110 active:scale-95"
+          }`}
       >
-        {open ? <FaTimes /> : <FaCommentDots />}
+        <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/0 to-white/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+        <div className="relative z-10 flex items-center justify-center">
+          {open ? <FaTimes size={24} /> : <FaCommentDots size={28} />}
+        </div>
       </button>
     </div>
   );
