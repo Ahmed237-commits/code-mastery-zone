@@ -80,7 +80,7 @@ export const authOptions: AuthOptions = {
     signOut: "/signOut",
   },
 
-  secret: process.env.AUTH_SECRET,
+  secret: process.env.NEXTAUTH_SECRET,
 };
 
 export default authOptions;

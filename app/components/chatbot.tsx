@@ -7,6 +7,8 @@ import {
   FaTimes,
   FaCommentDots,
 } from "react-icons/fa";
+import {useSession} from "next-auth/react"
+import Image from "next/image";
 
 type Message = {
   time: string;
@@ -20,7 +22,7 @@ export default function ChatBot() {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-
+const {data:session} = useSession();
   const scrollToBottom = () =>
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
 
@@ -76,7 +78,7 @@ export default function ChatBot() {
   };
 
   return (
-    <div className="relative">
+    <div className="relative small:hidden">
       {/* Chat window */}
       <div
         className={`transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] transform origin-top-right sm:origin-bottom-right ${open
@@ -134,7 +136,7 @@ export default function ChatBot() {
                   : "bg-white border border-indigo-50 text-indigo-600"
                   }`}
               >
-                {msg.from === "user" ? <FaUser size={14} /> : <FaRobot size={18} />}
+                {msg.from === "user" ? <Image width={20} height={20} className="rounded-full" src={session?.user?.image || ''} alt="" /> : <FaRobot size={18} />}
               </div>
 
               <div

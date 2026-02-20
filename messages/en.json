@@ -10,7 +10,8 @@
         "signUp": "Sign Up",
         "dashboard": "Dashboard",
         "profile": "Profile",
-        "signOut": "Sign Out"
+        "signOut": "Sign Out",
+        "menu": "Menu"
     },
     "Hero": {
         "title": "Master Programming with Code Mastery Zone",

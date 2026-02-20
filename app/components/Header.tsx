@@ -32,10 +32,11 @@ export default function Header() {
   ];
 
   return (
-    <header
-      className={` w-full top-0 z-50 transition-all duration-300 border-b ${isScrolled
-        ? 'bg-white/95 backdrop-blur-md shadow-sm py-2 border-slate-200/50'
-        : 'bg-white/80 backdrop-blur-md border-transparent py-4'
+        <header
+      className={`fixed top-0 left-0 w-full z-[9999] transition-all duration-300 border-b
+        ${isScrolled
+          ? 'bg-white/95 backdrop-blur-md shadow-sm py-2 border-slate-200/50'
+          : 'bg-white/80 backdrop-blur-md border-transparent py-4'
         }`}
     >
       <div className="container mx-auto px-6 flex justify-between items-center">
@@ -150,11 +151,21 @@ export default function Header() {
       </div>
 
       {/* Mobile Menu */}
-      <div className={`lg:hidden absolute top-full left-0 w-full bg-white/98 backdrop-blur-xl border-b border-gray-100 shadow-2xl transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] overflow-hidden ${isMobileMenuOpen ? 'max-h-[600px] opacity-100' : 'max-h-0 opacity-0'
-        }`}>
+      {/* Mobile Menu */}
+{/* Mobile Menu */}
+<div
+  className={`lg:hidden absolute top-full left-0 w-full
+  bg-white/98 backdrop-blur-xl
+  border-b border-gray-100 shadow-2xl
+  transition-all duration-500
+  overflow-hidden
+  ${isMobileMenuOpen
+    ? 'max-h-[600px] opacity-100 pointer-events-auto'
+    : 'max-h-0 opacity-0 pointer-events-none'
+  }`}
+>
         <div className="flex flex-col p-6 space-y-3">
           <div className="flex justify-between items-center pb-4 border-b border-gray-50 mb-4">
-            <span className="text-sm font-bold text-slate-400 uppercase tracking-widest">{t('menu')}</span>
             <LanguageSwitcher />
           </div>
           {navLinks.map((link) => {
