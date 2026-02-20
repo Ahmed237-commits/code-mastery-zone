@@ -5,9 +5,11 @@ import Header from '@/app/components/Header';
 import Footer from '@/app/components/Footer';
 import { useSession } from 'next-auth/react';
 import { getDiscussions, Discussion } from '@/app/lib/data';
+import { useTranslations } from 'next-intl';
 
 export default function ProfilePage() {
     const { data: session } = useSession();
+    const t = useTranslations('Profile');
     const [isEditing, setIsEditing] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [userDiscussions, setUserDiscussions] = useState<Discussion[]>([]);
@@ -62,7 +64,7 @@ export default function ProfilePage() {
         setTimeout(() => {
             setIsLoading(false);
             setIsEditing(false);
-            alert('Profile updated successfully!'); // Replace with a nicer toast if available
+            alert(t('updateSuccess'));
         }, 1000);
     };
 
@@ -106,8 +108,8 @@ export default function ProfilePage() {
                                     <div className="flex-1 pt-2 md:pt-4">
                                         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4">
                                             <div>
-                                                <h1 className="text-3xl font-bold text-slate-800 mb-1">{session?.user?.name || 'Guest User'}</h1>
-                                                <p className="text-slate-500 font-medium">Full Stack Developer Student</p>
+                                                <h1 className="text-3xl font-bold text-slate-800 mb-1">{session?.user?.name || t('guestUser')}</h1>
+                                                <p className="text-slate-500 font-medium">{t('studentRole')}</p>
                                             </div>
                                             <button
                                                 onClick={() => isEditing ? handleSave() : setIsEditing(true)}
@@ -121,7 +123,7 @@ export default function ProfilePage() {
                                                 ) : (
                                                     <i className={`fas ${isEditing ? 'fa-save' : 'fa-pen'}`}></i>
                                                 )}
-                                                {isEditing ? 'Save Changes' : 'Edit Profile'}
+                                                {isEditing ? t('saveChanges') : t('editProfile')}
                                             </button>
                                         </div>
 
@@ -148,7 +150,7 @@ export default function ProfilePage() {
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                                     <div className="space-y-6">
                                         <div>
-                                            <label className="block text-sm font-semibold text-slate-700 mb-2">Display Name</label>
+                                            <label className="block text-sm font-semibold text-slate-700 mb-2">{t('displayName')}</label>
                                             <input
                                                 type="text"
                                                 value={formData.name}
@@ -161,17 +163,17 @@ export default function ProfilePage() {
                                             />
                                         </div>
                                         <div>
-                                            <label className="block text-sm font-semibold text-slate-700 mb-2">Email Address</label>
+                                            <label className="block text-sm font-semibold text-slate-700 mb-2">{t('emailAddress')}</label>
                                             <input
                                                 type="email"
                                                 value={formData.email}
                                                 disabled={true} // Email usually not editable directly
                                                 className="w-full px-4 py-3 rounded-xl border border-transparent bg-slate-50 text-slate-500 cursor-not-allowed"
                                             />
-                                            {isEditing && <p className="text-xs text-orange-500 mt-1 pl-1">Email cannot be changed via profile settings.</p>}
+                                            {isEditing && <p className="text-xs text-orange-500 mt-1 pl-1">{t('emailNote')}</p>}
                                         </div>
                                         <div>
-                                            <label className="block text-sm font-semibold text-slate-700 mb-2">Location</label>
+                                            <label className="block text-sm font-semibold text-slate-700 mb-2">{t('location')}</label>
                                             <input
                                                 type="text"
                                                 value={formData.location}
@@ -187,7 +189,7 @@ export default function ProfilePage() {
 
                                     <div className="space-y-6">
                                         <div>
-                                            <label className="block text-sm font-semibold text-slate-700 mb-2">Bio</label>
+                                            <label className="block text-sm font-semibold text-slate-700 mb-2">{t('bio')}</label>
                                             <textarea
                                                 rows={4}
                                                 value={formData.bio}
@@ -201,7 +203,7 @@ export default function ProfilePage() {
                                         </div>
 
                                         <div>
-                                            <label className="block text-sm font-semibold text-slate-700 mb-2">Social Links</label>
+                                            <label className="block text-sm font-semibold text-slate-700 mb-2">{t('socialLinks')}</label>
                                             <div className="space-y-3">
                                                 <div className="flex items-center gap-3">
                                                     <div className="w-10 h-10 rounded-lg bg-slate-100 flex items-center justify-center text-slate-600">
@@ -209,7 +211,7 @@ export default function ProfilePage() {
                                                     </div>
                                                     <input
                                                         type="text"
-                                                        placeholder="Github Profile URL"
+                                                        placeholder={t('githubPlaceholder')}
                                                         disabled={!isEditing}
                                                         className={`flex-1 px-4 py-2.5 rounded-xl border transition-colors focus:ring-2 focus:ring-indigo-500/20 focus:outline-none ${isEditing
                                                             ? 'bg-white border-slate-200 focus:border-indigo-500'
@@ -223,7 +225,7 @@ export default function ProfilePage() {
                                                     </div>
                                                     <input
                                                         type="text"
-                                                        placeholder="Twitter Profile URL"
+                                                        placeholder={t('twitterPlaceholder')}
                                                         disabled={!isEditing}
                                                         className={`flex-1 px-4 py-2.5 rounded-xl border transition-colors focus:ring-2 focus:ring-indigo-500/20 focus:outline-none ${isEditing
                                                             ? 'bg-white border-slate-200 focus:border-indigo-500'
@@ -247,10 +249,10 @@ export default function ProfilePage() {
                                 <span className="w-10 h-10 bg-indigo-100 text-indigo-600 rounded-xl flex items-center justify-center">
                                     <i className="fas fa-comments text-sm"></i>
                                 </span>
-                                My Discussions
+                                {t('myDiscussions')}
                             </h2>
                             <a href="/community/new" className="text-sm font-semibold text-indigo-600 hover:text-indigo-700 transition-colors">
-                                + Start New
+                                {t('startNew')}
                             </a>
                         </div>
 
@@ -264,7 +266,7 @@ export default function ProfilePage() {
                                                 <span className="px-3 py-1 bg-slate-100 text-slate-600 text-xs font-bold rounded-full uppercase tracking-wider">
                                                     {discussion.category}
                                                 </span>
-                                                <span className="text-xs text-slate-400">{discussion.createdAt ? new Date(discussion.createdAt).toLocaleDateString() : discussion.time || 'Recently'}</span>
+                                                <span className="text-xs text-slate-400">{discussion.createdAt ? new Date(discussion.createdAt).toLocaleDateString() : discussion.time || (t('recently'))}</span>
                                             </div>
                                             <div className="flex gap-4 text-slate-400 text-xs font-semibold">
                                                 <span className="flex items-center gap-1.5 group-hover:text-indigo-600 transition-colors">
@@ -288,10 +290,10 @@ export default function ProfilePage() {
                                     <div className="w-16 h-16 bg-white rounded-2xl shadow-sm flex items-center justify-center mx-auto mb-4 text-slate-300">
                                         <i className="fas fa-comments text-2xl"></i>
                                     </div>
-                                    <h3 className="text-slate-800 font-bold mb-1">No discussions yet</h3>
-                                    <p className="text-slate-500 text-sm mb-6">Share your first thoughts with our amazing community!</p>
+                                    <h3 className="text-slate-800 font-bold mb-1">{t('noDiscussions')}</h3>
+                                    <p className="text-slate-500 text-sm mb-6">{t('noDiscussionsDesc')}</p>
                                     <a href="/community/new" className="inline-flex items-center gap-2 px-6 py-2.5 bg-indigo-600 text-white rounded-full font-semibold hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-100">
-                                        Start a Discussion
+                                        {t('startDiscussion')}
                                     </a>
                                 </div>
                             )}

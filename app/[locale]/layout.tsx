@@ -1,6 +1,7 @@
 // app/[locale]/layout.tsx
 import { ReactNode } from 'react';
 import { NextIntlClientProvider } from 'next-intl';
+import { getMessages } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
 import '../globals.css';
@@ -8,7 +9,6 @@ import { NextAuthProvider } from '../components/NextAuthProvider';
 import type { Metadata } from 'next';
 import { Outfit, Fredoka } from 'next/font/google';
 import Header from '../components/Header';
-
 
 const outfit = Outfit({
   subsets: ['latin'],
@@ -38,13 +38,8 @@ export default async function RootLayout({
     notFound();
   }
 
-  // Dynamic import للرسائل
-  let messages = {};
-  try {
-    messages = (await import(`../../../messages/${locale}.json`)).default;
-  } catch (err) {
-    console.warn(`No messages found for locale: ${locale}`);
-  }
+  // Use next-intl's getMessages() which correctly reads from i18n/request.ts
+  const messages = await getMessages();
 
   return (
     <html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'} className={`${outfit.variable} ${fredoka.variable}`}>

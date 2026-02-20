@@ -4,8 +4,11 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
+
 export default function SignInPage() {
     const router = useRouter();
+    const t = useTranslations('SignIn');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -22,10 +25,10 @@ export default function SignInPage() {
             });
 
             if (res?.error) {
-                alert('Invalid credentials'); // Replace with better UI later
+                alert(t('invalidCredentials'));
                 setIsLoading(false);
             } else {
-                router.push('/'); // Redirect to home or dashboard
+                router.push('/');
             }
         } catch (error) {
             console.error('Sign in error:', error);
@@ -53,25 +56,25 @@ export default function SignInPage() {
                                 Code Mastrey
                             </span>
                         </Link>
-                        <h1 className="text-2xl font-bold text-slate-800 mb-2 font-['Outfit']">Welcome Back!</h1>
-                        <p className="text-slate-500 text-sm">Sign in to continue your learning journey</p>
+                        <h1 className="text-2xl font-bold text-slate-800 mb-2 font-['Outfit']">{t('welcomeBack')}</h1>
+                        <p className="text-slate-500 text-sm">{t('subtitle')}</p>
                     </div>
 
                     {/* Social Sign In */}
                     <div className="space-y-3 mb-8">
                         <button
-                            onClick={() => signIn('google' , {callbackUrl : "/dashboard"})}
+                            onClick={() => signIn('google', { callbackUrl: "/dashboard" })}
                             className="w-full flex items-center justify-center gap-3 bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 font-medium py-2.5 px-4 rounded-xl transition-all duration-200 group"
                         >
                             <img src="https://www.google.com/favicon.ico" alt="Google" className="w-5 h-5 opacity-70 group-hover:opacity-100 transition-opacity" />
-                            <span>Continue with Google</span>
+                            <span>{t('continueGoogle')}</span>
                         </button>
                         <button
-                            onClick={() => signIn('github' ,  {callbackUrl : "/dashboard"})}
+                            onClick={() => signIn('github', { callbackUrl: "/dashboard" })}
                             className="w-full flex items-center justify-center gap-3 bg-[#24292e] hover:bg-[#2f363d] text-white font-medium py-2.5 px-4 rounded-xl transition-all duration-200 shadow-lg shadow-slate-900/10"
                         >
                             <i className="fab fa-github text-xl"></i>
-                            <span>Continue with GitHub</span>
+                            <span>{t('continueGithub')}</span>
                         </button>
                     </div>
 
@@ -80,14 +83,14 @@ export default function SignInPage() {
                             <div className="w-full border-t border-slate-200"></div>
                         </div>
                         <div className="relative flex justify-center text-sm">
-                            <span className="px-4 bg-white/50 backdrop-blur-sm text-slate-400">Or continue with email</span>
+                            <span className="px-4 bg-white/50 backdrop-blur-sm text-slate-400">{t('orEmail')}</span>
                         </div>
                     </div>
 
                     {/* Form */}
                     <form onSubmit={handleSubmit} className="space-y-5">
                         <div>
-                            <label className="block text-sm font-medium text-slate-700 mb-1.5 ml-1">Email Address</label>
+                            <label className="block text-sm font-medium text-slate-700 mb-1.5 ml-1">{t('emailLabel')}</label>
                             <div className="relative">
                                 <i className="fas fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
                                 <input
@@ -95,7 +98,7 @@ export default function SignInPage() {
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                     className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all text-slate-700 placeholder-slate-400 font-medium"
-                                    placeholder="name@example.com"
+                                    placeholder={t('emailPlaceholder')}
                                     required
                                 />
                             </div>
@@ -103,8 +106,8 @@ export default function SignInPage() {
 
                         <div>
                             <div className="flex justify-between items-center mb-1.5 ml-1">
-                                <label className="block text-sm font-medium text-slate-700">Password</label>
-                                <Link href="#" className="text-xs text-indigo-600 hover:text-indigo-700 font-medium">Forgot password?</Link>
+                                <label className="block text-sm font-medium text-slate-700">{t('passwordLabel')}</label>
+                                <Link href="#" className="text-xs text-indigo-600 hover:text-indigo-700 font-medium">{t('forgotPassword')}</Link>
                             </div>
                             <div className="relative">
                                 <i className="fas fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
@@ -126,18 +129,18 @@ export default function SignInPage() {
                         >
                             {isLoading ? (
                                 <span className="flex items-center justify-center gap-2">
-                                    <i className="fas fa-circle-notch fa-spin"></i> Signing in...
+                                    <i className="fas fa-circle-notch fa-spin"></i> {t('signingIn')}
                                 </span>
-                            ) : 'Sign In'}
+                            ) : t('signInButton')}
                         </button>
                     </form>
 
                     {/* Footer */}
                     <div className="mt-8 text-center">
                         <p className="text-slate-500 text-sm">
-                            Don't have an account?{' '}
+                            {t('noAccount')}{' '}
                             <Link href="/signUp" className="text-indigo-600 font-semibold hover:text-indigo-700 transition-colors">
-                                Create Account
+                                {t('createAccount')}
                             </Link>
                         </p>
                     </div>

@@ -9,18 +9,128 @@
         "signIn": "Sign In",
         "signUp": "Sign Up",
         "dashboard": "Dashboard",
-        "profile": "Profile"
+        "profile": "Profile",
+        "signOut": "Sign Out"
     },
     "Hero": {
         "title": "Master Programming with Code Mastery Zone",
         "subtitle": "Learn from scratch to advanced, build real projects, and join a vibrant community.",
         "cta": "Get Started",
-        "learnMore": "Learn More"
+        "learnMore": "Learn More",
+        "badge": "#1 Coding Academy for everyone",
+        "coursesCompleted": "Courses Completed",
+        "coursesLessons": "12k+ Lessons",
+        "activeStudents": "Active Students",
+        "activeStudentsCount": "5,000+ Worldwide"
     },
     "LanguageSwitcher": {
         "label": "Language",
         "en": "English",
         "ar": "Arabic"
+    },
+    "Features": {
+        "tag": "Why Choose Us",
+        "title": "Learning Made Fun & Effective",
+        "subtitle": "We combine education with entertainment to keep kids engaged while mastering real-world skills.",
+        "gamified": {
+            "title": "Gamified Learning",
+            "desc": "Earn points, badges, and rewards as you level up your coding skills."
+        },
+        "projects": {
+            "title": "Real Projects",
+            "desc": "Build actual websites, games, and apps to build your professional portfolio."
+        },
+        "community": {
+            "title": "Safe Community",
+            "desc": "Connect with other young creators in a moderated, friendly environment."
+        },
+        "mentors": {
+            "title": "Expert Mentors",
+            "desc": "Get guidance from industry professionals who love teaching kids."
+        }
+    },
+    "HomeCourses": {
+        "tag": "Our Courses",
+        "title": "Explore Your Passion",
+        "viewCourse": "View Course",
+        "free": "Free",
+        "courses": {
+            "python": {
+                "tag": "Beginner",
+                "duration": "8 Weeks",
+                "age": "Ages 10-14",
+                "title": "Python Adventures",
+                "description": "Master the most popular language by building text adventures and tools."
+            },
+            "web": {
+                "tag": "Intermediate",
+                "duration": "10 Weeks",
+                "age": "Ages 12+",
+                "title": "Web Wizardry",
+                "description": "Create stunning websites using HTML, CSS, and JavaScript."
+            },
+            "game": {
+                "tag": "Beginner",
+                "duration": "6 Weeks",
+                "age": "Ages 8-12",
+                "title": "Game Design Lab",
+                "description": "Start building your own video games with visual block coding."
+            },
+            "app": {
+                "tag": "Advanced",
+                "duration": "12 Weeks",
+                "age": "Ages 14+",
+                "title": "App Inventor",
+                "description": "Design and publish real mobile apps for iOS and Android."
+            }
+        }
+    },
+    "Testimonials": {
+        "tag": "Success Stories",
+        "title": "Loved by Parents & Kids",
+        "testimonials": {
+            "sarah": {
+                "quote": "\"I built my first website in just 3 weeks! The lessons are super fun and I love the challenges.\"",
+                "name": "Sarah M.",
+                "role": "Student, Age 11"
+            },
+            "james": {
+                "quote": "\"As a parent, I'm amazed at how much my son has learned. He's more confident and logical now.\"",
+                "name": "James R.",
+                "role": "Parent"
+            },
+            "michael": {
+                "quote": "\"The community is so helpful. Whenever I get stuck, there's always someone to help me out!\"",
+                "name": "Michael C.",
+                "role": "Student, Age 13"
+            }
+        }
+    },
+    "CTA": {
+        "title": "Ready to Start Your Journey?",
+        "subtitle": "Join over 5,000 happy students learning to code today. No credit card required, just curiosity!",
+        "button": "Join CodeMastery for Free"
+    },
+    "Footer": {
+        "description": "Empowering the next generation of digital creators with fun, accessible, and high-quality programming education.",
+        "learn": "Learn",
+        "learnItems": {
+            "python": "Python",
+            "webDev": "Web Dev",
+            "gameDesign": "Game Design",
+            "mobileApps": "Mobile Apps"
+        },
+        "company": "Company",
+        "companyItems": {
+            "about": "About",
+            "careers": "Careers",
+            "blog": "Blog",
+            "contact": "Contact"
+        },
+        "followUs": "Follow Us",
+        "copyright": "CodeMastery Academy. All Rights Reserved.",
+        "privacyPolicy": "Privacy Policy",
+        "termsOfService": "Terms of Service"
     },
     "Courses": {
         "tag": "Discover & Learn",
@@ -172,5 +282,137 @@
                 "other": "Other"
             }
         }
+    },
+    "FAQ": {
+        "tag": "Support Center",
+        "title": "Frequently Asked",
+        "titleHighlight": "Questions",
+        "subtitle": "Everything you need to know about our courses, platform, and community. Can't find what you're looking for? Reach out to our team.",
+        "stillHaveQuestions": "Still have questions?",
+        "stillHaveQuestionsDesc": "We're here to help! Send us a message and we'll get back to you as soon as possible.",
+        "contactSupport": "Contact Support"
+    },
+    "Dashboard": {
+        "loading": "Loading...",
+        "notSignedIn": "You are not signed in",
+        "notSignedInDesc": "Please sign in to access your dashboard and continue learning.",
+        "signIn": "Sign In",
+        "welcomeBack": "Welcome back,",
+        "welcomeSubtitle": "Here's what's happening with your learning journey today.",
+        "stats": {
+            "coursesInProgress": "Courses in Progress",
+            "completedCourses": "Completed Courses",
+            "certificatesEarned": "Certificates Earned",
+            "pointsEarned": "Points Earned"
+        },
+        "continueLearning": "Continue Learning",
+        "completed": "Completed",
+        "resumeCourse": "Resume Course",
+        "editProfile": "Edit Profile",
+        "recentActivity": "Recent Activity",
+        "activities": {
+            "completedVariables": "Completed \"Variables & Data Types\"",
+            "startedFunctions": "Started \"Python Functions\"",
+            "earnedBadge": "Earned \"Fast Learner\" Badge"
+        },
+        "timeAgo": {
+            "twoHours": "2 hours ago",
+            "oneDay": "1 day ago",
+            "threeDays": "3 days ago"
+        }
+    },
+    "Profile": {
+        "guestUser": "Guest User",
+        "studentRole": "Full Stack Developer Student",
+        "editProfile": "Edit Profile",
+        "saveChanges": "Save Changes",
+        "updateSuccess": "Profile updated successfully!",
+        "displayName": "Display Name",
+        "emailAddress": "Email Address",
+        "emailNote": "Email cannot be changed via profile settings.",
+        "location": "Location",
+        "bio": "Bio",
+        "socialLinks": "Social Links",
+        "githubPlaceholder": "Github Profile URL",
+        "twitterPlaceholder": "Twitter Profile URL",
+        "myDiscussions": "My Discussions",
+        "startNew": "+ Start New",
+        "recently": "Recently",
+        "noDiscussions": "No discussions yet",
+        "noDiscussionsDesc": "Share your first thoughts with our amazing community!",
+        "startDiscussion": "Start a Discussion"
+    },
+    "SignIn": {
+        "welcomeBack": "Welcome Back!",
+        "subtitle": "Sign in to continue your learning journey",
+        "continueGoogle": "Continue with Google",
+        "continueGithub": "Continue with GitHub",
+        "orEmail": "Or continue with email",
+        "emailLabel": "Email Address",
+        "emailPlaceholder": "name@example.com",
+        "passwordLabel": "Password",
+        "forgotPassword": "Forgot password?",
+        "signInButton": "Sign In",
+        "signingIn": "Signing in...",
+        "noAccount": "Don't have an account?",
+        "createAccount": "Create Account",
+        "invalidCredentials": "Invalid credentials"
+    },
+    "SignUp": {
+        "createAccount": "Create Account",
+        "subtitle": "Join our community and start coding today",
+        "signUpGoogle": "Sign up with Google",
+        "signUpGithub": "Sign up with GitHub",
+        "orEmail": "Or register with email",
+        "fullName": "Full Name",
+        "namePlaceholder": "John Doe",
+        "emailLabel": "Email Address",
+        "emailPlaceholder": "name@example.com",
+        "passwordLabel": "Password",
+        "confirmPassword": "Confirm Password",
+        "signUpButton": "Sign Up",
+        "creatingAccount": "Creating Account...",
+        "hasAccount": "Already have an account?",
+        "logIn": "Log In",
+        "passwordsDontMatch": "Passwords don't match"
+    },
+    "NewDiscussion": {
+        "backToDiscussions": "Back to Discussions",
+        "title": "Start a",
+        "titleHighlight": "Conversation",
+        "subtitle": "Share your knowledge, ask questions, or showcase your latest work to the community.",
+        "discussionTitle": "Discussion Title",
+        "titlePlaceholder": "e.g., How to handle state management effectively in Next.js 14?",
+        "selectCategory": "Select a Category",
+        "categories": {
+            "general": "General Discussion",
+            "help": "Seeking Help",
+            "showcase": "Project Showcase",
+            "announcement": "Announcement",
+            "career": "Career Advice"
+        },
+        "categoryDescriptions": {
+            "general": "Talk about anything tech-related",
+            "help": "Stuck on a problem? Ask the community",
+            "showcase": "Show off what you've built",
+            "announcement": "Share news or updates",
+            "career": "Discuss jobs, interviews, and growth"
+        },
+        "tagsLabel": "Tags",
+        "tagsPlaceholder": "Add relevant tags separated by commas (e.g., react, typescript, guide)",
+        "discussionContent": "Discussion Content",
+        "markdownSupported": "Markdown Supported",
+        "contentPlaceholder": "Write your thoughts here...",
+        "cancel": "Cancel",
+        "publishButton": "Publish Discussion",
+        "publishing": "Publishing...",
+        "publishFailed": "Failed to publish discussion. Please check the backend connection.",
+        "success": "Success!",
+        "successDesc": "Your discussion is now live.",
+        "redirecting": "Redirecting you to the community...",
+        "guidelinesNote": "By posting, you agree to our",
+        "guidelinesLink": "Community Guidelines",
+        "and": "and",
+        "policyLink": "Content Policy"
     }
 }

@@ -1,25 +1,31 @@
 // app/components/Features.tsx
+'use client';
+
+import { useTranslations } from 'next-intl';
+
 export default function Features() {
+  const t = useTranslations('Features');
+
   const features = [
     {
       icon: 'gamepad',
-      title: 'Gamified Learning',
-      description: 'Earn points, badges, and rewards as you level up your coding skills.',
+      title: t('gamified.title'),
+      description: t('gamified.desc'),
     },
     {
       icon: 'laptop-code',
-      title: 'Real Projects',
-      description: 'Build actual websites, games, and apps to build your professional portfolio.',
+      title: t('projects.title'),
+      description: t('projects.desc'),
     },
     {
       icon: 'users',
-      title: 'Safe Community',
-      description: 'Connect with other young creators in a moderated, friendly environment.',
+      title: t('community.title'),
+      description: t('community.desc'),
     },
     {
       icon: 'chalkboard-teacher',
-      title: 'Expert Mentors',
-      description: 'Get guidance from industry professionals who love teaching kids.',
+      title: t('mentors.title'),
+      description: t('mentors.desc'),
     },
   ];
 
@@ -27,10 +33,10 @@ export default function Features() {
     <section className="py-24 relative" id="features">
       <div className="container mx-auto px-6">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <span className="block text-indigo-600 font-bold uppercase tracking-widest text-sm mb-3">Why Choose Us</span>
-          <h2 className="text-4xl font-bold text-slate-900 mb-4">Learning Made Fun & Effective</h2>
+          <span className="block text-indigo-600 font-bold uppercase tracking-widest text-sm mb-3">{t('tag')}</span>
+          <h2 className="text-4xl font-bold text-slate-900 mb-4">{t('title')}</h2>
           <p className="text-slate-500 text-lg">
-            We combine education with entertainment to keep kids engaged while mastering real-world skills.
+            {t('subtitle')}
           </p>
         </div>
 

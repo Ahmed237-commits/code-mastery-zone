@@ -20,7 +20,7 @@ export default function Hero() {
           <div className="flex flex-col items-center lg:items-start text-center lg:text-left z-10">
 
             <div className="inline-flex items-center px-4 py-2 bg-indigo-600/10 text-indigo-600 rounded-full text-sm font-semibold mb-8 gap-2 animate-fade-in-up">
-              <i className="fas fa-star text-xs"></i> #1 Coding Academy for everyone
+              <i className="fas fa-star text-xs"></i> {t('badge')}
             </div>
 
             <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold text-slate-900 mb-6 leading-tight animate-fade-in-up [animation-delay:100ms]">
@@ -49,8 +49,8 @@ export default function Hero() {
                 <i className="fas fa-check"></i>
               </div>
               <div>
-                <h5 className="text-slate-800 font-bold text-sm">Courses Completed</h5>
-                <p className="text-slate-500 text-xs font-medium">12k+ Lessons</p>
+                <h5 className="text-slate-800 font-bold text-sm">{t('coursesCompleted')}</h5>
+                <p className="text-slate-500 text-xs font-medium">{t('coursesLessons')}</p>
               </div>
             </div>
 
@@ -59,8 +59,8 @@ export default function Hero() {
                 <i className="fas fa-user-graduate"></i>
               </div>
               <div>
-                <h5 className="text-slate-800 font-bold text-sm">Active Students</h5>
-                <p className="text-slate-500 text-xs font-medium">5,000+ Worldwide</p>
+                <h5 className="text-slate-800 font-bold text-sm">{t('activeStudents')}</h5>
+                <p className="text-slate-500 text-xs font-medium">{t('activeStudentsCount')}</p>
               </div>
             </div>
           </div>

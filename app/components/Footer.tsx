@@ -1,5 +1,14 @@
 // app/components/Footer.tsx
+'use client';
+
+import { useTranslations } from 'next-intl';
+
 export default function Footer() {
+  const t = useTranslations('Footer');
+
+  const learnItems = ['python', 'webDev', 'gameDesign', 'mobileApps'] as const;
+  const companyItems = ['about', 'careers', 'blog', 'contact'] as const;
+
   return (
     <footer className="bg-slate-900 text-slate-400 pt-36 pb-12" id="contact">
       <div className="container mx-auto px-6">
@@ -14,17 +23,17 @@ export default function Footer() {
               </span>
             </a>
             <p className="text-sm leading-relaxed max-w-xs text-slate-400">
-              Empowering the next generation of digital creators with fun, accessible, and high-quality programming education.
+              {t('description')}
             </p>
           </div>
 
           <div>
-            <h4 className="text-white text-lg font-semibold mb-6">Learn</h4>
+            <h4 className="text-white text-lg font-semibold mb-6">{t('learn')}</h4>
             <ul className="space-y-3">
-              {['Python', 'Web Dev', 'Game Design', 'Mobile Apps'].map((item) => (
+              {learnItems.map((item) => (
                 <li key={item}>
                   <a href="#" className="text-slate-400 hover:text-white hover:translate-x-1 transition-all duration-300 inline-block">
-                    {item}
+                    {t(`learnItems.${item}`)}
                   </a>
                 </li>
               ))}
@@ -32,12 +41,12 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4 className="text-white text-lg font-semibold mb-6">Company</h4>
+            <h4 className="text-white text-lg font-semibold mb-6">{t('company')}</h4>
             <ul className="space-y-3">
-              {['About', 'Careers', 'Blog', 'Contact'].map((item) => (
+              {companyItems.map((item) => (
                 <li key={item}>
                   <a href={`/${item.toLowerCase()}`} className="text-slate-400 hover:text-white hover:translate-x-1 transition-all duration-300 inline-block">
-                    {item}
+                    {t(`companyItems.${item}`)}
                   </a>
                 </li>
               ))}
@@ -45,7 +54,7 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4 className="text-white text-lg font-semibold mb-6">Follow Us</h4>
+            <h4 className="text-white text-lg font-semibold mb-6">{t('followUs')}</h4>
             <div className="flex gap-4">
               {['facebook-f', 'twitter', 'instagram', 'youtube'].map((icon) => (
                 <a
@@ -61,10 +70,10 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-5 text-sm">
-          <p>&copy; {new Date().getFullYear()} CodeMastery Academy. All Rights Reserved.</p>
+          <p>&copy; {new Date().getFullYear()} {t('copyright')}</p>
           <div className="flex gap-6">
-            <a href="#" className="text-slate-400 hover:text-white transition-colors">Privacy Policy</a>
-            <a href="#" className="text-slate-400 hover:text-white transition-colors">Terms of Service</a>
+            <a href="#" className="text-slate-400 hover:text-white transition-colors">{t('privacyPolicy')}</a>
+            <a href="#" className="text-slate-400 hover:text-white transition-colors">{t('termsOfService')}</a>
           </div>
         </div>
       </div>
