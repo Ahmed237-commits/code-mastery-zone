@@ -1,38 +1,43 @@
 import React from 'react';
-import Footer from '../components/Footer';
+import Footer from '@/app/components/Footer';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 
-export default function AboutPage() {
+export default async function AboutPage({ params }: { params: { locale: string } }) {
+    const { locale } = await params;
+    setRequestLocale(locale);
+    const t = await getTranslations('About');
+
     const stats = [
-        { label: 'Students', value: '10k+', icon: 'fa-users' },
-        { label: 'Courses', value: '50+', icon: 'fa-book-open' },
-        { label: 'Instructors', value: '20+', icon: 'fa-chalkboard-teacher' },
-        { label: 'Satisfaction', value: '4.9/5', icon: 'fa-star' },
+        { label: t('stats.students'), value: '10k+', icon: 'fa-users' },
+        { label: t('stats.courses'), value: '50+', icon: 'fa-book-open' },
+        { label: t('stats.instructors'), value: '20+', icon: 'fa-chalkboard-teacher' },
+        { label: t('stats.satisfaction'), value: '4.9/5', icon: 'fa-star' },
     ];
 
     const team = [
         {
             name: 'Ahmed Eissa',
-            role: 'Founder & Lead Instructor',
+            role: t('team.roles.founder'),
             image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?bg=202020&auto=format&fit=crop&q=80&w=400',
-            bio: 'Passionate about making coding accessible to everyone. Full stack developer with 10+ years of experience.',
+            bio: t('team.bios.founder'),
         },
         {
             name: 'Sarah Johnson',
-            role: 'Head of Curriculum',
+            role: t('team.roles.headCurriculum'),
             image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?bg=202020&auto=format&fit=crop&q=80&w=400',
-            bio: 'Expert in educational psychology and computer science. Ensuring our lessons are fun and effective.',
+            bio: t('team.bios.headCurriculum'),
         },
         {
             name: 'Michael Chen',
-            role: 'Senior Developer',
+            role: t('team.roles.seniorDev'),
             image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?bg=202020&auto=format&fit=crop&q=80&w=400',
-            bio: 'Building the platform that powers your learning. Loves optimization and clean code.',
+            bio: t('team.bios.seniorDev'),
         },
         {
             name: 'Emily Davis',
-            role: 'Community Manager',
+            role: t('team.roles.communityManager'),
             image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?bg=202020&auto=format&fit=crop&q=80&w=400',
-            bio: 'Here to support you on your journey. fostering a positive and helpful community.',
+            bio: t('team.bios.communityManager'),
         }
     ];
 
@@ -50,14 +55,13 @@ export default function AboutPage() {
 
                     <div className="container mx-auto px-6 relative z-10 text-center">
                         <span className="inline-block py-1 px-3 rounded-full bg-indigo-500/20 border border-indigo-400/30 text-indigo-300 text-sm font-semibold mb-6 animate-fade-in-up">
-                            Our Mission
+                            {t('hero.tag')}
                         </span>
                         <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight animate-fade-in-up [animation-delay:100ms]">
-                            Empowering the Next Generation of <br />
-                            <span className="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">Digital Creators</span>
+                            <span dangerouslySetInnerHTML={{ __html: t.raw('hero.title') }} />
                         </h1>
                         <p className="text-xl text-slate-300 max-w-2xl mx-auto mb-10 animate-fade-in-up [animation-delay:200ms]">
-                            We believe that coding is the superpower of the 21st century. Our mission is to make learning to code fun, accessible, and inspiring for everyone.
+                            {t('hero.subtitle')}
                         </p>
                     </div>
                 </section>
@@ -98,19 +102,12 @@ export default function AboutPage() {
                             </div>
                             <div className="w-full lg:w-1/2">
                                 <h2 className="text-3xl md:text-4xl font-bold text-slate-800 mb-6">
-                                    From a Simple Idea to a <br />
-                                    <span className="text-indigo-600">Global Community</span>
+                                    <span dangerouslySetInnerHTML={{ __html: t.raw('story.title') }} />
                                 </h2>
                                 <div className="space-y-6 text-slate-600 text-lg leading-relaxed">
-                                    <p>
-                                        CodeMastery began with a simple observation: most coding resources were either too dry and academic or too simple and toy-like. There was a gap for high-quality, project-based learning that treated students like the future professionals they are.
-                                    </p>
-                                    <p>
-                                        Founded in 2024, we set out to build a platform where learning feels like an adventure. Where "Hello World" is just the first step on a journey to building real applications, games, and website.
-                                    </p>
-                                    <p>
-                                        Today, we're proud to support thousands of learners around the world, helping them unlock their creativity and potential through the power of code.
-                                    </p>
+                                    <p>{t('story.p1')}</p>
+                                    <p>{t('story.p2')}</p>
+                                    <p>{t('story.p3')}</p>
                                 </div>
                             </div>
                         </div>
@@ -121,15 +118,15 @@ export default function AboutPage() {
                 <section className="py-20 bg-white">
                     <div className="container mx-auto px-6">
                         <div className="text-center max-w-3xl mx-auto mb-16">
-                            <h2 className="text-3xl md:text-4xl font-bold text-slate-800 mb-4">Our Core Values</h2>
-                            <p className="text-slate-600 text-lg">The principles that guide everything we do at CodeMastery.</p>
+                            <h2 className="text-3xl md:text-4xl font-bold text-slate-800 mb-4">{t('values.title')}</h2>
+                            <p className="text-slate-600 text-lg">{t('values.subtitle')}</p>
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                             {[
-                                { title: 'Fun First', desc: 'Learning happens best when you are having fun. We gamify education to keep engagement high.', icon: 'fa-gamepad', color: 'bg-pink-50 text-pink-500' },
-                                { title: 'Quality Content', desc: 'We do not dumb things down. We teach industry-standard practices in an accessible way.', icon: 'fa-award', color: 'bg-purple-50 text-purple-500' },
-                                { title: 'Community Driven', desc: 'We believe in the power of peers. Our community helps each other grow and succeed.', icon: 'fa-users', color: 'bg-indigo-50 text-indigo-500' }
+                                { title: t('values.fun.title'), desc: t('values.fun.desc'), icon: 'fa-gamepad', color: 'bg-pink-50 text-pink-500' },
+                                { title: t('values.quality.title'), desc: t('values.quality.desc'), icon: 'fa-award', color: 'bg-purple-50 text-purple-500' },
+                                { title: t('values.community.title'), desc: t('values.community.desc'), icon: 'fa-users', color: 'bg-indigo-50 text-indigo-500' }
                             ].map((value, i) => (
                                 <div key={i} className="p-8 rounded-3xl bg-slate-50 border border-slate-100 hover:shadow-lg transition-all hover:-translate-y-1">
                                     <div className={`w-14 h-14 rounded-2xl ${value.color} flex items-center justify-center text-2xl mb-6`}>
@@ -147,8 +144,8 @@ export default function AboutPage() {
                 <section className="py-20 md:py-32">
                     <div className="container mx-auto px-6">
                         <div className="text-center max-w-3xl mx-auto mb-16">
-                            <h2 className="text-3xl md:text-4xl font-bold text-slate-800 mb-4">Meet the Team</h2>
-                            <p className="text-slate-600 text-lg">The passionate educators and developers behind CodeMastery.</p>
+                            <h2 className="text-3xl md:text-4xl font-bold text-slate-800 mb-4">{t('team.title')}</h2>
+                            <p className="text-slate-600 text-lg">{t('team.subtitle')}</p>
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">

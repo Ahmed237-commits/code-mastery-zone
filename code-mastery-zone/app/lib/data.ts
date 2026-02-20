@@ -1,4 +1,8 @@
+import { Key, ReactNode } from "react";
+
 export interface Course {
+    age: ReactNode;
+    id: Key | null | undefined;
     _id: string; // Updated from id to _id for MongoDB compatibility if needed, but frontend uses id
     tag: string;
     image: string;

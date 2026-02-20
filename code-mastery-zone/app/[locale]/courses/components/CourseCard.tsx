@@ -1,10 +1,14 @@
 import { Course } from '@/app/lib/data';
+import { useTranslations } from 'next-intl';
+import { Link } from '@/i18n/routing';
 
 interface CourseCardProps {
     course: Course;
 }
 
 export default function CourseCard({ course }: CourseCardProps) {
+    const t = useTranslations('CourseCard');
+
     return (
         <div className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border border-gray-100 flex flex-col group h-full">
             <div className="relative h-52 overflow-hidden">
@@ -36,7 +40,7 @@ export default function CourseCard({ course }: CourseCardProps) {
                         href="#"
                         className="text-slate-700 font-semibold no-underline flex items-center gap-1.5 text-sm transition-all duration-300 hover:text-indigo-600 hover:gap-2.5"
                     >
-                        View Course <i className="fas fa-arrow-right"></i>
+                        {t('viewCourse')} <i className="fas fa-arrow-right"></i>
                     </a>
                 </div>
             </div>

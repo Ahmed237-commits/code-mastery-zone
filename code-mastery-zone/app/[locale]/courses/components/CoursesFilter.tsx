@@ -2,6 +2,7 @@
 
 import { useSearchParams, usePathname, useRouter } from 'next/navigation';
 import { useDebouncedCallback } from 'use-debounce';
+import { useTranslations } from 'next-intl';
 
 const categories = ['All', 'Beginner', 'Intermediate', 'Advanced'];
 
@@ -9,6 +10,7 @@ export default function CoursesFilter() {
     const searchParams = useSearchParams();
     const pathname = usePathname();
     const { replace } = useRouter();
+    const t = useTranslations('Courses');
 
     const handleSearch = useDebouncedCallback((term: string) => {
         const params = new URLSearchParams(searchParams);
@@ -37,7 +39,7 @@ export default function CoursesFilter() {
                 <div className="relative w-full md:w-96">
                     <input
                         type="text"
-                        placeholder="Search courses..."
+                        placeholder={t('searchPlaceholder')}
                         className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none transition-all"
                         defaultValue={searchParams.get('q')?.toString()}
                         onChange={(e) => handleSearch(e.target.value)}
@@ -70,11 +72,11 @@ export default function CoursesFilter() {
                                 key={cat}
                                 onClick={() => handleCategoryChange(cat)}
                                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap ${isActive
-                                        ? 'bg-white text-indigo-600 shadow-sm'
-                                        : 'text-gray-600 hover:text-gray-900 hover:bg-gray-200'
+                                    ? 'bg-white text-indigo-600 shadow-sm'
+                                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-200'
                                     }`}
                             >
-                                {cat}
+                                {t(`categories.${cat}`)}
                             </button>
                         );
                     })}

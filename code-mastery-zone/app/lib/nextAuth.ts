@@ -76,8 +76,8 @@ export const authOptions: AuthOptions = {
 },
 
   pages: {
-    signIn: "/signin",
-    signOut: "/signout",
+    signIn: "/signIn",
+    signOut: "/signOut",
   },
 
   secret: process.env.AUTH_SECRET,

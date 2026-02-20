@@ -1,9 +1,10 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { Link, usePathname } from '@/i18n/routing';
 import { useSession, signOut } from 'next-auth/react';
+import { useTranslations } from 'next-intl';
+import LanguageSwitcher from './LanguageSwitcher';
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -11,6 +12,7 @@ export default function Header() {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const { data: session } = useSession();
   const pathname = usePathname();
+  const t = useTranslations('Header');
 
   useEffect(() => {
     const handleScroll = () => {
@@ -21,12 +23,12 @@ export default function Header() {
   }, []);
 
   const navLinks = [
-    { name: 'Home', href: '/' },
-    { name: 'About', href: '/about' },
-    { name: 'Contact', href: '/contact' },
-    { name: 'Courses', href: '/courses' },
-    { name: 'Community', href: '/community' },
-    { name: 'FAQ', href: '/faq' },
+    { name: t('home'), href: '/' },
+    { name: t('courses'), href: '/courses' },
+    { name: t('community'), href: '/community' },
+    { name: t('faq'), href: '/faq' },
+    { name: t('about'), href: '/about' },
+    { name: t('contact'), href: '/contact' },
   ];
 
   return (
@@ -53,7 +55,7 @@ export default function Header() {
             const isActive = pathname === link.href;
             return (
               <Link
-                key={link.name}
+                key={link.href}
                 href={link.href}
                 className={`text-[15px] font-medium transition-colors relative group ${isActive ? 'text-purple-600' : 'text-slate-600 hover:text-purple-600'
                   }`}
@@ -68,6 +70,7 @@ export default function Header() {
 
         {/* Actions */}
         <div className="hidden lg:flex items-center gap-4">
+          <LanguageSwitcher />
           {session ? (
             <div className="relative">
               <button
@@ -101,14 +104,14 @@ export default function Header() {
                     onClick={() => setIsProfileOpen(false)}
                     className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-indigo-600 transition-colors"
                   >
-                    <i className="fas fa-chart-line mr-2"></i> Dashboard
+                    <i className="fas fa-chart-line mr-2"></i> {t('dashboard')}
                   </Link>
                   <Link
                     href="/profile"
                     onClick={() => setIsProfileOpen(false)}
                     className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-indigo-600 transition-colors"
                   >
-                    <i className="fas fa-user mr-2"></i> Profile
+                    <i className="fas fa-user mr-2"></i> {t('profile')}
                   </Link>
                   <button
                     onClick={() => {
@@ -125,10 +128,10 @@ export default function Header() {
           ) : (
             <>
               <Link href="/signIn" className="text-slate-700 font-semibold hover:text-indigo-600 transition-colors">
-                Log In
+                {t('signIn')}
               </Link>
               <Link href="/signUp" className="inline-flex items-center justify-center px-6 py-2.5 rounded-full bg-slate-900 text-white font-semibold shadow-lg shadow-slate-900/20 hover:bg-slate-800 hover:-translate-y-0.5 transition-all">
-                Start Free
+                {t('signUp')}
               </Link>
             </>
           )}
@@ -144,14 +147,17 @@ export default function Header() {
       </div>
 
       {/* Mobile Menu */}
-      <div className={`lg:hidden absolute top-full left-0 w-full bg-white border-b border-gray-100 shadow-xl transition-all duration-300 overflow-hidden ${isMobileMenuOpen ? 'max-h-[400px] opacity-100' : 'max-h-0 opacity-0'
+      <div className={`lg:hidden absolute top-full left-0 w-full bg-white border-b border-gray-100 shadow-xl transition-all duration-300 overflow-hidden ${isMobileMenuOpen ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
         }`}>
         <div className="flex flex-col p-6 space-y-4">
+          <div className="flex justify-start">
+            <LanguageSwitcher />
+          </div>
           {navLinks.map((link) => {
             const isActive = pathname === link.href;
             return (
               <Link
-                key={link.name}
+                key={link.href}
                 href={link.href}
                 className={`text-lg font-medium ${isActive ? 'text-purple-600' : 'text-slate-600'
                   }`}
@@ -183,10 +189,10 @@ export default function Header() {
                 </div>
               </div>
               <Link href="/dashboard" className="text-slate-700 font-medium py-2 hover:text-indigo-600" onClick={() => setIsMobileMenuOpen(false)}>
-                <i className="fas fa-chart-line mr-2"></i> Dashboard
+                <i className="fas fa-chart-line mr-2"></i> {t('dashboard')}
               </Link>
               <Link href="/profile" className="text-slate-700 font-medium py-2 hover:text-indigo-600" onClick={() => setIsMobileMenuOpen(false)}>
-                <i className="fas fa-user mr-2"></i> Profile
+                <i className="fas fa-user mr-2"></i> {t('profile')}
               </Link>
               <button onClick={() => { setIsMobileMenuOpen(false); signOut({ callbackUrl: "/" }); }} className="text-red-600 font-medium py-2 text-left">
                 <i className="fas fa-sign-out-alt mr-2"></i> Sign Out
@@ -194,8 +200,8 @@ export default function Header() {
             </>
           ) : (
             <>
-              <Link href="/signIn" className="text-slate-700 font-medium pb-2" onClick={() => setIsMobileMenuOpen(false)}>Log In</Link>
-              <Link href="/signUp" className="text-indigo-600 font-bold" onClick={() => setIsMobileMenuOpen(false)}>Start Free</Link>
+              <Link href="/signIn" className="text-slate-700 font-medium pb-2" onClick={() => setIsMobileMenuOpen(false)}>{t('signIn')}</Link>
+              <Link href="/signUp" className="text-indigo-600 font-bold" onClick={() => setIsMobileMenuOpen(false)}>{t('signUp')}</Link>
             </>
           )}
         </div>

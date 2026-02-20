@@ -2,12 +2,14 @@
 
 import { Discussion } from '@/app/lib/data';
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 
 interface DiscussionCardProps {
   discussion: Discussion;
 }
 
 export default function DiscussionCard({ discussion }: DiscussionCardProps) {
+  const t = useTranslations('Community.card');
   // Likes
   const [liked, setLiked] = useState(false);
   const [likes, setLikes] = useState(discussion.likes);
@@ -139,7 +141,7 @@ export default function DiscussionCard({ discussion }: DiscussionCardProps) {
         </div>
 
         <button className="text-sm font-semibold text-indigo-600 hover:bg-indigo-50 px-3 py-1 rounded-lg transition">
-          View Thread
+          {t('viewThread')}
         </button>
       </div>
 
@@ -150,7 +152,7 @@ export default function DiscussionCard({ discussion }: DiscussionCardProps) {
             type="text"
             value={commentText}
             onChange={(e) => setCommentText(e.target.value)}
-            placeholder="Write a comment..."
+            placeholder={t('writeComment')}
             className="flex-1 px-4 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
             onKeyDown={(e) => {
               if (e.key === 'Enter') handleAddComment();
@@ -161,7 +163,7 @@ export default function DiscussionCard({ discussion }: DiscussionCardProps) {
             disabled={isCommenting}
             className={`px-4 py-2 text-sm font-semibold text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition ${isCommenting ? 'cursor-wait opacity-70' : ''}`}
           >
-            {isCommenting ? 'Posting...' : 'Post'}
+            {isCommenting ? t('posting') : t('post')}
           </button>
         </div>
       )}

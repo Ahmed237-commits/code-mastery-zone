@@ -2,17 +2,35 @@ import { getDiscussions, getCommunityStats } from '@/app/lib/data';
 import CommunityHero from './components/CommunityHero';
 import DiscussionCard from './components/DiscussionCard';
 import CommunityStats from './components/CommunityStats';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 
 export const metadata = {
     title: 'Community | Code Mastery Zone',
     description: 'Join our vibrant tech community, share your knowledge, and grow together.',
 };
 
-export default async function CommunityPage() {
-    const [discussions, stats] = await Promise.all([
+export default async function CommunityPage({ params }: { params: { locale: string } }) {
+    const { locale } = await params;
+    setRequestLocale(locale);
+    const t = await getTranslations('Community');
+
+    const [discussions, statsData] = await Promise.all([
         getDiscussions(),
         getCommunityStats(),
     ]);
+
+    const stats = statsData.map(stat => {
+        let labelKey = '';
+        if (stat.label === 'Active Members') labelKey = 'stats.members';
+        else if (stat.label === 'Courses Completed') labelKey = 'stats.courses';
+        else if (stat.label === 'Discussions Started') labelKey = 'stats.discussions';
+        else if (stat.label === 'Questions Answered') labelKey = 'stats.answers';
+
+        return {
+            ...stat,
+            label: labelKey ? t(labelKey) : stat.label
+        };
+    });
 
     return (
         <main className="min-h-screen bg-white">
@@ -25,21 +43,21 @@ export default async function CommunityPage() {
                     <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
                         <div className="max-w-xl">
                             <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
-                                Recent Discussions
+                                {t('page.recentDiscussions')}
                             </h2>
                             <p className="text-gray-600">
-                                Explore the latest topics, questions, and insights shared by our community members.
+                                {t('page.exploreSubtitle')}
                             </p>
                         </div>
                         <div className="flex bg-white p-1.5 rounded-xl border border-gray-200">
                             <button className="px-5 py-2 text-sm font-semibold bg-indigo-600 text-white rounded-lg transition">
-                                Latest
+                                {t('page.filterLatest')}
                             </button>
                             <button className="px-5 py-2 text-sm font-semibold text-gray-500 hover:text-gray-900 rounded-lg transition">
-                                Trending
+                                {t('page.filterTrending')}
                             </button>
                             <button className="px-5 py-2 text-sm font-semibold text-gray-500 hover:text-gray-900 rounded-lg transition">
-                                My Topics
+                                {t('page.filterMyTopics')}
                             </button>
                         </div>
                     </div>
@@ -52,7 +70,7 @@ export default async function CommunityPage() {
 
                     <div className="mt-16 text-center">
                         <button className="px-8 py-3 bg-white border border-gray-200 text-gray-900 font-bold rounded-xl hover:bg-gray-50 transition shadow-sm">
-                            View All Discussions
+                            {t('page.viewAll')}
                         </button>
                     </div>
                 </div>

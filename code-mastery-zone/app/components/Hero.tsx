@@ -1,4 +1,10 @@
+import { useTranslations } from 'next-intl';
+import { Link } from '@/i18n/routing';
+
 export default function Hero() {
+  const t = useTranslations('Hero');
+  const tHeader = useTranslations('Header'); // Reuse for Sign Up / Login if needed, or keeping it separate
+
   return (
     <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden" id="home">
       {/* Background Gradients */}
@@ -18,22 +24,19 @@ export default function Hero() {
             </div>
 
             <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold text-slate-900 mb-6 leading-tight animate-fade-in-up [animation-delay:100ms]">
-              Unlock Your Child's <br className="hidden lg:block" />
-              <span className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
-                Creative Superpower
-              </span>
+              {t('title')}
             </h1>
 
             <p className="text-lg sm:text-xl text-slate-500 mb-10 max-w-lg lg:max-w-xl animate-fade-in-up [animation-delay:200ms]">
-              Join the most engaging coding platform where kids turn imagination into reality through games, apps, and animations.
+              {t('subtitle')}
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto animate-fade-in-up [animation-delay:300ms]">
-              <a href="/signUp" className="inline-flex items-center justify-center px-8 py-4 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold shadow-lg shadow-indigo-500/30 hover:shadow-indigo-500/50 hover:-translate-y-1 transition-all duration-300">
-                Start Learning Now
-              </a>
+              <Link href="/signUp" className="inline-flex items-center justify-center px-8 py-4 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold shadow-lg shadow-indigo-500/30 hover:shadow-indigo-500/50 hover:-translate-y-1 transition-all duration-300">
+                {t('cta')}
+              </Link>
               <a href="#" className="inline-flex items-center justify-center px-8 py-4 rounded-full bg-white text-indigo-600 font-semibold border-2 border-transparent hover:border-indigo-100 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 group">
-                <i className="fas fa-play mr-2 group-hover:scale-110 transition-transform"></i> Watch Demo
+                <i className="fas fa-play mr-2 group-hover:scale-110 transition-transform"></i> {t('learnMore')}
               </a>
             </div>
           </div>

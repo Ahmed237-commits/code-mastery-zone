@@ -1,8 +1,11 @@
 'use client';
 
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 
 export default function CommunityHero() {
+    const t = useTranslations('Community.hero');
+
     return (
         <section className="relative py-20 overflow-hidden">
             {/* Background Decorative Elements */}
@@ -12,25 +15,25 @@ export default function CommunityHero() {
 
             <div className="container mx-auto px-6 text-center">
                 <span className="inline-block px-4 py-1.5 mb-6 text-sm font-bold tracking-widest text-indigo-600 uppercase bg-indigo-50 rounded-full">
-                    Our Community
+                    {t('tag')}
                 </span>
                 <h1 className="text-4xl md:text-6xl font-bold text-slate-900 mb-6 leading-tight">
-                    Learn, Share, and <span className="text-indigo-600">Grow Together</span>
+                    <span dangerouslySetInnerHTML={{ __html: t.raw('title') }} />
                 </h1>
                 <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-10">
-                    Join thousands of passionate learners. Ask questions, share your projects, and get help from experts in our vibrant tech community.
+                    {t('subtitle')}
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                     <Link
                         href="/community/new"
                         className="px-8 py-4 bg-indigo-600 text-white rounded-xl font-bold hover:bg-indigo-700 transition shadow-lg shadow-indigo-200 text-center"
                     >
-                        Start a Discussion
+                        {t('startDiscussion')}
                     </Link>
                     <div className="relative group">
                         <input
                             type="text"
-                            placeholder="Search discussions..."
+                            placeholder={t('searchPlaceholder')}
                             className="px-6 py-4 rounded-xl border border-gray-200 bg-white/80 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 w-full sm:w-64 transition-all"
                         />
                         <i className="fas fa-search absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-indigo-500 transition"></i>
