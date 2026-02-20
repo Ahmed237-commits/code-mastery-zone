@@ -1,0 +1,176 @@
+{
+    "Header": {
+        "home": "Home",
+        "courses": "Courses",
+        "community": "Community",
+        "faq": "FAQ",
+        "about": "About",
+        "contact": "Contact",
+        "signIn": "Sign In",
+        "signUp": "Sign Up",
+        "dashboard": "Dashboard",
+        "profile": "Profile"
+    },
+    "Hero": {
+        "title": "Master Programming with Code Mastery Zone",
+        "subtitle": "Learn from scratch to advanced, build real projects, and join a vibrant community.",
+        "cta": "Get Started",
+        "learnMore": "Learn More"
+    },
+    "LanguageSwitcher": {
+        "label": "Language",
+        "en": "English",
+        "ar": "Arabic"
+    },
+    "Courses": {
+        "tag": "Discover & Learn",
+        "title": "Explore Our Courses",
+        "subtitle": "Find the perfect path to master new skills and advance your career.",
+        "searchPlaceholder": "Search courses...",
+        "categories": {
+            "All": "All",
+            "Beginner": "Beginner",
+            "Intermediate": "Intermediate",
+            "Advanced": "Advanced"
+        },
+        "noCourses": "No courses found",
+        "tryAdjusting": "Try adjusting your search or filter to find what you're looking for."
+    },
+    "CourseCard": {
+        "viewCourse": "View Course"
+    },
+    "Community": {
+        "hero": {
+            "tag": "Our Community",
+            "title": "Learn, Share, and <span class='text-indigo-600'>Grow Together</span>",
+            "subtitle": "Join thousands of passionate learners. Ask questions, share your projects, and get help from experts in our vibrant tech community.",
+            "startDiscussion": "Start a Discussion",
+            "searchPlaceholder": "Search discussions..."
+        },
+        "stats": {
+            "members": "Active Members",
+            "courses": "Courses Completed",
+            "discussions": "Discussions Started",
+            "answers": "Questions Answered"
+        },
+        "page": {
+            "recentDiscussions": "Recent Discussions",
+            "exploreSubtitle": "Explore the latest topics, questions, and insights shared by our community members.",
+            "filterLatest": "Latest",
+            "filterTrending": "Trending",
+            "filterMyTopics": "My Topics",
+            "viewAll": "View All Discussions"
+        },
+        "card": {
+            "writeComment": "Write a comment...",
+            "post": "Post",
+            "posting": "Posting...",
+            "viewThread": "View Thread"
+        }
+    },
+    "About": {
+        "hero": {
+            "tag": "Our Mission",
+            "title": "Empowering the Next Generation of <br /><span class='bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent'>Digital Creators</span>",
+            "subtitle": "We believe that coding is the superpower of the 21st century. Our mission is to make learning to code fun, accessible, and inspiring for everyone."
+        },
+        "stats": {
+            "students": "Students",
+            "courses": "Courses",
+            "instructors": "Instructors",
+            "satisfaction": "Satisfaction"
+        },
+        "story": {
+            "title": "From a Simple Idea to a <br /><span class='text-indigo-600'>Global Community</span>",
+            "p1": "CodeMastery began with a simple observation: most coding resources were either too dry and academic or too simple and toy-like. There was a gap for high-quality, project-based learning that treated students like the future professionals they are.",
+            "p2": "Founded in 2024, we set out to build a platform where learning feels like an adventure. Where \"Hello World\" is just the first step on a journey to building real applications, games, and website.",
+            "p3": "Today, we're proud to support thousands of learners around the world, helping them unlock their creativity and potential through the power of code."
+        },
+        "values": {
+            "title": "Our Core Values",
+            "subtitle": "The principles that guide everything we do at CodeMastery.",
+            "fun": {
+                "title": "Fun First",
+                "desc": "Learning happens best when you are having fun. We gamify education to keep engagement high."
+            },
+            "quality": {
+                "title": "Quality Content",
+                "desc": "We do not dumb things down. We teach industry-standard practices in an accessible way."
+            },
+            "community": {
+                "title": "Community Driven",
+                "desc": "We believe in the power of peers. Our community helps each other grow and succeed."
+            }
+        },
+        "team": {
+            "title": "Meet the Team",
+            "subtitle": "The passionate educators and developers behind CodeMastery.",
+            "roles": {
+                "founder": "Founder & Lead Instructor",
+                "headCurriculum": "Head of Curriculum",
+                "seniorDev": "Senior Developer",
+                "communityManager": "Community Manager"
+            },
+            "bios": {
+                "founder": "Passionate about making coding accessible to everyone. Full stack developer with 10+ years of experience.",
+                "headCurriculum": "Expert in educational psychology and computer science. Ensuring our lessons are fun and effective.",
+                "seniorDev": "Building the platform that powers your learning. Loves optimization and clean code.",
+                "communityManager": "Here to support you on your journey. fostering a positive and helpful community."
+            }
+        }
+    },
+    "Contact": {
+        "header": {
+            "tag": "Get in Touch",
+            "title": "We'd Love to <br /><span class='bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent'>Hear From You</span>",
+            "subtitle": "Have a question about our courses, pricing, or just want to say hello? Fill out the form below or reach out to us directly."
+        },
+        "cards": {
+            "email": {
+                "title": "Email Us",
+                "desc": "Our friendly team is here to help."
+            },
+            "visit": {
+                "title": "Visit Us",
+                "desc": "Come say hello at our office HQ.",
+                "location": "Egypt"
+            },
+            "call": {
+                "title": "Call Us",
+                "desc": "Mon-Fri from 8am to 5pm."
+            },
+            "chat": {
+                "title": "Live Chat",
+                "desc": "Chat with our support team.",
+                "action": "Start a chat"
+            }
+        },
+        "faq": {
+            "title": "Frequently Asked Questions",
+            "desc": "Find answers to common questions about our courses, platform, and pricing in our comprehensive FAQ section.",
+            "action": "Visit FAQ Page"
+        },
+        "form": {
+            "title": "Send us a message",
+            "firstName": "First Name",
+            "lastName": "Last Name",
+            "email": "Email Address",
+            "subject": "Subject",
+            "message": "Message",
+            "send": "Send Message",
+            "placeholders": {
+                "firstName": "John",
+                "lastName": "Doe",
+                "email": "john@example.com",
+                "selectTopic": "Select a topic",
+                "message": "How can we help you?"
+            },
+            "topics": {
+                "support": "General Support",
+                "billing": "Billing Question",
+                "partnership": "Partnership",
+                "other": "Other"
+            }
+        }
+    }
+}

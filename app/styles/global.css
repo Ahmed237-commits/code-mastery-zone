@@ -1,0 +1,66 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #4F46E5;
+  --color-primary-dark: #4338CA;
+  --color-secondary: #EC4899;
+  --color-accent: #8B5CF6;
+  --color-success: #10B981;
+  --color-background: #F8FAFC;
+  --color-surface: #ffffff;
+  --color-text-main: #1E293B;
+  --color-text-light: #64748B;
+
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-float-delayed: float 5s ease-in-out infinite reverse;
+  --animate-fade-in-up: fadeInUp 0.8s ease-out forwards;
+
+  @keyframes float {
+
+    0%,
+    100% {
+      transform: translateY(0) rotateY(-5deg);
+    }
+
+    50% {
+      transform: translateY(-20px) rotateY(-5deg);
+    }
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+body {
+  font-family: 'Outfit', sans-serif;
+  color: var(--color-text-main);
+  background-color: var(--color-background);
+  line-height: 1.7;
+  overflow-x: hidden;
+  background-image:
+    radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.05) 0%, transparent 20%),
+    radial-gradient(circle at 90% 80%, rgba(236, 72, 153, 0.05) 0%, transparent 20%);
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: 'Fredoka', sans-serif;
+  line-height: 1.2;
+}
