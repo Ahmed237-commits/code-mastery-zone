@@ -149,9 +149,6 @@ export default function Header() {
           <i className={`fas ${isMobileMenuOpen ? 'fa-times' : 'fa-bars'}`}></i>
         </button>
       </div>
-
-      {/* Mobile Menu */}
-      {/* Mobile Menu */}
 {/* Mobile Menu */}
 <div
   className={`lg:hidden absolute top-full left-0 w-full
@@ -160,7 +157,7 @@ export default function Header() {
   transition-all duration-500
   overflow-hidden
   ${isMobileMenuOpen
-    ? 'max-h-[600px] opacity-100 pointer-events-auto'
+    ? 'max-h-[600px] opacity-100 pointer-events-auto overflow-y-auto'
     : 'max-h-0 opacity-0 pointer-events-none'
   }`}
 >
