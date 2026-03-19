@@ -10,12 +10,12 @@ export default function Footer() {
   const companyItems = ['about', 'careers', 'blog', 'contact'] as const;
 
   return (
-    <footer className="bg-slate-900 text-slate-400 pt-36 pb-12" id="contact">
+    <footer className="bg-slate-900 dark:bg-slate-950 text-slate-400 pt-36 pb-12" id="contact">
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-16">
           <div className="col-span-1 md:col-span-2 lg:col-span-1">
             <a href="#" className="flex items-center gap-3 mb-6 no-underline group">
-              <div className="w-11 h-11 bg-white text-slate-900 rounded-2xl flex items-center justify-center text-xl shadow-lg group-hover:rotate-12 transition-transform">
+              <div className="w-11 h-11 bg-white dark:bg-slate-800 text-slate-900 dark:text-white rounded-2xl flex items-center justify-center text-xl shadow-lg group-hover:rotate-12 transition-transform">
                 <i className="fas fa-code"></i>
               </div>
               <span className="text-2xl font-bold text-white">

@@ -11,16 +11,16 @@ export default async function FAQPage() {
     const t = await getTranslations('FAQ');
 
     return (
-        <main className="min-h-screen bg-slate-50 pt-32 pb-20">
+        <main className="min-h-screen bg-slate-50 dark:bg-slate-950 pt-32 pb-20">
             <div className="container mx-auto px-6">
                 <div className="max-w-3xl mx-auto text-center mb-20">
-                    <span className="inline-block px-4 py-1.5 mb-6 text-sm font-bold tracking-widest text-indigo-600 uppercase bg-indigo-50 rounded-full">
+                    <span className="inline-block px-4 py-1.5 mb-6 text-sm font-bold tracking-widest text-indigo-600 dark:text-indigo-400 uppercase bg-indigo-50 dark:bg-indigo-900/30 rounded-full">
                         {t('tag')}
                     </span>
-                    <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-6">
-                        {t('title')} <span className="text-indigo-600">{t('titleHighlight')}</span>
+                    <h1 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-6">
+                        {t('title')} <span className="text-indigo-600 dark:text-indigo-400">{t('titleHighlight')}</span>
                     </h1>
-                    <p className="text-lg text-gray-600">
+                    <p className="text-lg text-gray-600 dark:text-slate-400">
                         {t('subtitle')}
                     </p>
                 </div>
@@ -29,17 +29,17 @@ export default async function FAQPage() {
                     {faqs.map((faq) => (
                         <div
                             key={faq._id}
-                            className="bg-white rounded-2xl border border-gray-100 p-6 md:p-8 hover:border-indigo-100 hover:shadow-lg hover:shadow-indigo-500/5 transition-all group"
+                            className="bg-white dark:bg-slate-900 rounded-2xl border border-gray-100 dark:border-slate-800 p-6 md:p-8 hover:border-indigo-100 dark:hover:border-indigo-900/50 hover:shadow-lg hover:shadow-indigo-500/5 transition-all group"
                         >
-                            <h3 className="text-xl font-bold text-slate-900 mb-4 flex items-center gap-4">
-                                <span className="flex-shrink-0 w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-sm font-bold">
+                            <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-4">
+                                <span className="flex-shrink-0 w-8 h-8 rounded-lg bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-sm font-bold">
                                     Q
                                 </span>
                                 {faq.question}
                             </h3>
                             <div className="flex gap-4">
                                 <span className="flex-shrink-0 w-8 h-8"></span>
-                                <p className="text-gray-600 leading-relaxed text-lg">
+                                <p className="text-gray-600 dark:text-slate-400 leading-relaxed text-lg">
                                     {faq.answer}
                                 </p>
                             </div>

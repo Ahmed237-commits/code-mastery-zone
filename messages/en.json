@@ -22,7 +22,7 @@
         "coursesCompleted": "Courses Completed",
         "coursesLessons": "12k+ Lessons",
         "activeStudents": "Active Students",
-        "activeStudentsCount": "5,000+ Worldwide"
+        "activeStudentsCount": "0 Worldwide"
     },
     "LanguageSwitcher": {
         "label": "Language",
@@ -78,7 +78,7 @@
                 "description": "Start building your own video games with visual block coding."
             },
             "app": {
-                "tag": "Advanced",
+                "tag": "Beginner",
                 "duration": "12 Weeks",
                 "age": "Ages 14+",
                 "title": "App Inventor",
@@ -132,23 +132,6 @@
         "copyright": "CodeMastery Academy. All Rights Reserved.",
         "privacyPolicy": "Privacy Policy",
         "termsOfService": "Terms of Service"
-    },
-    "Courses": {
-        "tag": "Discover & Learn",
-        "title": "Explore Our Courses",
-        "subtitle": "Find the perfect path to master new skills and advance your career.",
-        "searchPlaceholder": "Search courses...",
-        "categories": {
-            "All": "All",
-            "Beginner": "Beginner",
-            "Intermediate": "Intermediate",
-            "Advanced": "Advanced"
-        },
-        "noCourses": "No courses found",
-        "tryAdjusting": "Try adjusting your search or filter to find what you're looking for."
-    },
-    "CourseCard": {
-        "viewCourse": "View Course"
     },
     "Community": {
         "hero": {
@@ -415,5 +398,131 @@
         "guidelinesLink": "Community Guidelines",
         "and": "and",
         "policyLink": "Content Policy"
-    }
+    },
+    "ChatBot": {
+        "title": "Chat with our AI",
+        "subtitle": "Ask anything and get a quick answer",
+        "placeholder": "Ask anything...",
+        "send": "Send",
+        "loading": "Loading...",
+        "error": "Error",
+        "errorDesc": "Something went wrong. Please try again later.",
+        "tryAgain": "Try Again", 
+        "warning":"AI Assistant may provide inaccurate info."
+    },
+  "Courses": {
+    "title": "Programming Courses",
+    "subtitle": "Choose your path and start your journey in programming",
+    "allCourses": "All Courses",
+    "noCourses": "No Courses Found",
+    "noCoursesDesc": "We couldn't find any courses matching your search criteria",
+    "viewAll": "View All Courses",
+    "search": "Search for a course...",
+    "filters": "Filters",
+    "clearFilters": "Clear Filters",
+    "showFilters": "Show Filters",
+    "hideFilters": "Hide Filters",
+    "searchPlaceholder": "Search by course name or description...",
+    "categories": {
+      "all": "All Categories",
+      "Programming": "Programming Fundamentals",
+      "Scratch": "Scratch Programming",
+      "Python": "Python Programming",
+      "Web": "Web Development",
+      "Robotics": "Robotics",
+      "AI": "Artificial Intelligence",
+      "Games": "Game Development",
+      "Mobile": "Mobile Apps"
+    
+    },
+    "levels": {
+      "all": "All Levels",
+      "beginner": "Beginner",
+      "intermediate": "Intermediate",
+      "advanced": "Advanced"
+    },
+    "sortBy": {
+      "popular": "Most Popular",
+      "newest": "Newest",
+      "priceLow": "Price: Low to High",
+      "priceHigh": "Price: High to Low"
+    },
+    "viewMode": {
+      "grid": "Grid View",
+      "list": "List View"
+    },
+    "details": {
+      "duration": "{minutes} minutes",
+      "lessons": "{count} lessons",
+      "ageGroup": "{age} years",
+      "price": "SAR",
+      "free": "Free",
+      "enroll": "Enroll Now",
+      "start": "Start Learning",
+      "moreInfo": "More Information"
+    },
+    "badges": {
+      "new": "New",
+      "popular": "Popular",
+      "beginner": "Beginner Friendly",
+      "intermediate": "Intermediate",
+      "advanced": "Advanced"
+    },
+    "loading": "Loading courses...",
+    "courseNotFound": "Course Not Found",
+    "courseNotFoundDesc": "We couldn't find the requested course",
+    "backToCourses": "Back to Courses",
+    "home": "Home",
+    "reviews": "reviews",
+    "students": "students",
+    "hours": "hours",
+    "lessons": "lessons",
+    "instructor": "Instructor",
+    "enrolled": "Already Enrolled",
+    "enrollNow": "Enroll Now",
+    "freeForever": "Free Forever",
+    "currency": "SAR",
+    "save": "Save",
+    "language": "Language",
+    "projects": "Projects",
+    "certificate": "Certificate of Completion",
+    "startLearning": "Start Learning",
+    "moneyBack": "30-day money-back guarantee",
+    "overview": "Overview",
+    "syllabus": "Syllabus",
+    "whatYouWillLearn": "What You'll Learn",
+    "requirements": "Requirements",
+    "thisCourseIncludes": "This Course Includes",
+    "videoLessons": "video lessons",
+    "articles": "Articles & Resources",
+    "downloadableResources": "Downloadable Resources",
+    "communityAccess": "Community Access",
+    "courseSyllabus": "Course Syllabus",
+    "leadInstructor": "Lead Instructor",
+    "relatedCourses": "Related Courses",
+    "comingSoon": "Coming Soon",
+    "instructorBio": "Expert in teaching programming with over 10 years of experience. Holds a PhD in Computer Science.",
+    "arabic": "Arabic",
+    "english": "English",
+    "week": "Week",
+    "weeks": "weeks",
+    "projectsCount": "Practical Projects",
+    "quiz": "Quizzes",
+    "support": "24/7 Support",
+    "access": "Full Access",
+    "updated": "Recently Updated",
+    "featured": "Featured Courses",
+    "recommended": "Recommended for You",
+    "beginnerFriendly": "No experience needed",
+    "popularChoice": "Popular Choice",
+    "limitedOffer": "Limited Time Offer",
+    "discount": "Discount",
+    "includes": "Includes:",
+    "watchIntro": "Watch Intro",
+    "share": "Share",
+    "saveToList": "Save to List",
+    "report": "Report",
+    "copyright": "All Rights Reserved",
+    "level": "Level"
+  }
 }

@@ -19,15 +19,15 @@ export default function Hero() {
           {/* Text Content */}
           <div className="flex flex-col items-center lg:items-start text-center lg:text-left z-10">
 
-            <div className="inline-flex items-center px-4 py-2 bg-indigo-600/10 text-indigo-600 rounded-full text-sm font-semibold mb-8 gap-2 animate-fade-in-up">
+            <div className="inline-flex items-center px-4 py-2 bg-indigo-600/10 dark:bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 rounded-full text-sm font-semibold mb-8 gap-2 animate-fade-in-up">
               <i className="fas fa-star text-xs"></i> {t('badge')}
             </div>
 
-            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold text-slate-900 mb-6 leading-tight animate-fade-in-up [animation-delay:100ms]">
+            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold text-slate-900 dark:text-white mb-6 leading-tight animate-fade-in-up [animation-delay:100ms]">
               {t('title')}
             </h1>
 
-            <p className="text-lg sm:text-xl text-slate-500 mb-10 max-w-lg lg:max-w-xl animate-fade-in-up [animation-delay:200ms]">
+            <p className="text-lg sm:text-xl text-slate-500 dark:text-slate-400 mb-10 max-w-lg lg:max-w-xl animate-fade-in-up [animation-delay:200ms]">
               {t('subtitle')}
             </p>
 
@@ -35,7 +35,7 @@ export default function Hero() {
               <Link href="/signUp" className="inline-flex items-center justify-center px-8 py-4 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold shadow-lg shadow-indigo-500/30 hover:shadow-indigo-500/50 hover:-translate-y-1 transition-all duration-300">
                 {t('cta')}
               </Link>
-              <a href="#" className="inline-flex items-center justify-center px-8 py-4 rounded-full bg-white text-indigo-600 font-semibold border-2 border-transparent hover:border-indigo-100 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 group">
+              <a href="#" className="inline-flex items-center justify-center px-8 py-4 rounded-full bg-white dark:bg-slate-800 text-indigo-600 dark:text-indigo-400 font-semibold border-2 border-transparent hover:border-indigo-100 dark:hover:border-indigo-900 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 group">
                 <i className="fas fa-play mr-2 group-hover:scale-110 transition-transform"></i> {t('learnMore')}
               </a>
             </div>
@@ -44,23 +44,23 @@ export default function Hero() {
           {/* Hero Image & Floating Cards */}
           <div className="relative mt-12 lg:mt-0 perspective-1000">
             {/* Floating Elements */}
-            <div className="absolute top-6 right-[-10px] sm:right-[-30px] bg-white/90 backdrop-blur-md p-4 rounded-2xl shadow-xl flex items-center gap-3 animate-float-delayed z-20 border border-white/50">
+            <div className="absolute top-6 right-[-10px] sm:right-[-30px] bg-white/90 dark:bg-slate-800/90 backdrop-blur-md p-4 rounded-2xl shadow-xl flex items-center gap-3 animate-float-delayed z-20 border border-white/50 dark:border-slate-700/50">
               <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white text-lg shadow-lg">
                 <i className="fas fa-check"></i>
               </div>
               <div>
-                <h5 className="text-slate-800 font-bold text-sm">{t('coursesCompleted')}</h5>
-                <p className="text-slate-500 text-xs font-medium">{t('coursesLessons')}</p>
+                <h5 className="text-slate-800 dark:text-slate-100 font-bold text-sm">{t('coursesCompleted')}</h5>
+                <p className="text-slate-500 dark:text-slate-400 text-xs font-medium">{t('coursesLessons')}</p>
               </div>
             </div>
 
-            <div className="absolute bottom-10 left-[-10px] sm:left-[-40px] bg-white/90 backdrop-blur-md p-4 rounded-2xl shadow-xl flex items-center gap-3 animate-float z-20 border border-white/50 [animation-duration:7s]">
+            <div className="absolute bottom-10 left-[-10px] sm:left-[-40px] bg-white/90 dark:bg-slate-800/90 backdrop-blur-md p-4 rounded-2xl shadow-xl flex items-center gap-3 animate-float z-20 border border-white/50 dark:border-slate-700/50 [animation-duration:7s]">
               <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-pink-500 to-rose-500 flex items-center justify-center text-white text-lg shadow-lg">
                 <i className="fas fa-user-graduate"></i>
               </div>
               <div>
-                <h5 className="text-slate-800 font-bold text-sm">{t('activeStudents')}</h5>
-                <p className="text-slate-500 text-xs font-medium">{t('activeStudentsCount')}</p>
+                <h5 className="text-slate-800 dark:text-slate-100 font-bold text-sm">{t('activeStudents')}</h5>
+                <p className="text-slate-500 dark:text-slate-400 text-xs font-medium">{t('activeStudentsCount')}</p>
               </div>
             </div>
           </div>
@@ -78,7 +78,7 @@ export default function Hero() {
         >
           <path
             d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"
-            className="fill-white"
+            className="fill-white dark:fill-slate-900"
           ></path>
         </svg>
       </div>

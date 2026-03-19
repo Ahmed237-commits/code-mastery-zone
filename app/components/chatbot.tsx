@@ -7,9 +7,9 @@ import {
   FaTimes,
   FaCommentDots,
 } from "react-icons/fa";
-import {useSession} from "next-auth/react"
+import { useSession } from "next-auth/react"
 import Image from "next/image";
-
+import { useTranslations } from 'next-intl';
 type Message = {
   time: string;
   from: "user" | "bot";
@@ -22,14 +22,14 @@ export default function ChatBot() {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-const {data:session} = useSession();
+  const { data: session } = useSession();
+  const t = useTranslations('ChatBot');
   const scrollToBottom = () =>
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
 
   useEffect(() => {
     scrollToBottom();
   }, [messages, open]);
-
   const sendMessage = async () => {
     if (!input.trim() || loading) return;
 
@@ -84,7 +84,7 @@ const {data:session} = useSession();
         className={`transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] transform origin-top-right sm:origin-bottom-right ${open
           ? "scale-100 opacity-100 translate-y-0"
           : "scale-95 opacity-0 -translate-y-10 sm:translate-y-10 pointer-events-none"
-          } fixed top-[85px] sm:top-auto sm:bottom-24 right-4 sm:right-6 z-40 w-[calc(100%-2rem)] sm:w-[380px] h-[500px] max-h-[calc(100vh-120px)] bg-white/95 backdrop-blur-xl border border-white/20 rounded-3xl shadow-[0_20px_50px_rgba(79,70,229,0.15)] flex flex-col overflow-hidden mb-4`}
+          } fixed top-[85px] sm:top-auto sm:bottom-24 right-4 sm:right-6 z-40 w-[calc(100%-2rem)] sm:w-[380px] h-[500px] max-h-[calc(100vh-120px)] bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border border-white/20 dark:border-slate-800/50 rounded-3xl shadow-[0_20px_50px_rgba(79,70,229,0.15)] flex flex-col overflow-hidden mb-4`}
       >
         {/* Header */}
         <div className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white p-5 flex justify-between items-center shadow-lg relative overflow-hidden">
@@ -113,14 +113,14 @@ const {data:session} = useSession();
         </div>
 
         {/* Messages */}
-        <div className="flex-1 p-5 overflow-y-auto space-y-6 bg-gradient-to-b from-gray-50/50 to-white/50 scrollbar-thin scrollbar-thumb-indigo-200">
+        <div className="flex-1 p-5 overflow-y-auto space-y-6 bg-gradient-to-b from-gray-50/50 to-white/50 dark:from-slate-800/50 dark:to-slate-900/50 scrollbar-thin scrollbar-thumb-indigo-200">
           {messages.length === 0 && (
             <div className="text-center py-12 flex flex-col items-center animate-fade-in">
-              <div className="w-20 h-20 bg-indigo-50 rounded-full flex items-center justify-center mb-4 border-2 border-dashed border-indigo-100">
-                <FaRobot className="text-4xl text-indigo-300" />
+              <div className="w-20 h-20 bg-indigo-50 dark:bg-indigo-900/30 rounded-full flex items-center justify-center mb-4 border-2 border-dashed border-indigo-100 dark:border-indigo-800">
+                <FaRobot className="text-4xl text-indigo-300 dark:text-indigo-400" />
               </div>
-              <h4 className="text-slate-800 font-bold mb-1">Welcome!</h4>
-              <p className="text-slate-500 text-sm max-w-[200px]">I can help you with your courses and learning journey.</p>
+              <h4 className="text-slate-800 dark:text-slate-100 font-bold mb-1">{t('title')}</h4>
+              <p className="text-slate-500 dark:text-slate-400 text-sm max-w-[200px]">{t('subtitle')}</p>
             </div>
           )}
 
@@ -133,10 +133,10 @@ const {data:session} = useSession();
               <div
                 className={`w-9 h-9 rounded-2xl flex items-center justify-center shrink-0 shadow-sm transition-transform hover:scale-110 ${msg.from === "user"
                   ? "bg-indigo-600 text-white"
-                  : "bg-white border border-indigo-50 text-indigo-600"
+                  : "bg-white dark:bg-slate-800 border border-indigo-50 dark:border-slate-700 text-indigo-600 dark:text-indigo-400"
                   }`}
               >
-                {msg.from === "user" ? <Image width={20} height={20} className="rounded-full" src={session?.user?.image || ''} alt="" /> : <FaRobot size={18} />}
+                {msg.from === "user" ? session ? <Image width={20} height={20} className="rounded-full" src={session?.user?.image || ''} alt="" /> : <FaUser size={18} /> : <FaRobot size={18} />}
               </div>
 
               <div
@@ -146,7 +146,7 @@ const {data:session} = useSession();
                 <div
                   className={`p-4 rounded-2xl text-[14px] leading-relaxed shadow-sm transition-all duration-300 ${msg.from === "user"
                     ? "bg-indigo-600 text-white rounded-tr-none hover:shadow-indigo-200"
-                    : "bg-white text-slate-700 border border-indigo-50 rounded-tl-none hover:shadow-gray-200"
+                    : "bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border border-indigo-50 dark:border-slate-700 rounded-tl-none hover:shadow-gray-200"
                     }`}
                 >
                   {msg.text}
@@ -160,10 +160,10 @@ const {data:session} = useSession();
 
           {loading && (
             <div className="flex gap-3 animate-message-in">
-              <div className="w-9 h-9 bg-white border border-indigo-50 rounded-2xl flex items-center justify-center text-indigo-600 shadow-sm shrink-0">
+              <div className="w-9 h-9 bg-white dark:bg-slate-800 border border-indigo-50 dark:border-slate-700 rounded-2xl flex items-center justify-center text-indigo-600 dark:text-indigo-400 shadow-sm shrink-0">
                 <FaRobot size={18} className="animate-pulse" />
               </div>
-              <div className="bg-white border border-indigo-50 p-4 rounded-2xl rounded-tl-none shadow-sm">
+              <div className="bg-white dark:bg-slate-800 border border-indigo-50 dark:border-slate-700 p-4 rounded-2xl rounded-tl-none shadow-sm">
                 <div className="flex gap-1.5">
                   <span className="w-2 h-2 bg-indigo-400 rounded-full animate-bounce [animation-duration:1s]"></span>
                   <span className="w-2 h-2 bg-indigo-400 rounded-full animate-bounce [animation-duration:1s] [animation-delay:200ms]"></span>
@@ -177,15 +177,15 @@ const {data:session} = useSession();
         </div>
 
         {/* Input */}
-        <div className="p-4 bg-white border-t border-indigo-50/50 backdrop-blur-md">
-          <div className="flex gap-2 items-center bg-gray-50 border border-indigo-100 rounded-2xl px-4 py-3 focus-within:ring-4 focus-within:ring-indigo-500/10 focus-within:border-indigo-400/50 transition-all duration-300">
+        <div className="p-4 bg-white dark:bg-slate-900 border-t border-indigo-50/50 dark:border-slate-800/50 backdrop-blur-md">
+          <div className="flex gap-2 items-center bg-gray-50 dark:bg-slate-800 border border-indigo-100 dark:border-slate-700 rounded-2xl px-4 py-3 focus-within:ring-4 focus-within:ring-indigo-500/10 focus-within:border-indigo-400/50 transition-all duration-300">
             <input
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && sendMessage()}
               disabled={loading}
-              placeholder="How can I help you today?"
-              className="flex-1 bg-transparent outline-none text-sm text-slate-700 placeholder:text-slate-400"
+              placeholder={t('placeholder')}
+              className="flex-1 bg-transparent outline-none text-sm text-slate-700 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500"
             />
             <button
               onClick={sendMessage}
@@ -196,7 +196,7 @@ const {data:session} = useSession();
             </button>
           </div>
           <p className="text-[10px] text-center text-slate-400 mt-3 font-medium">
-            AI Assistant may provide inaccurate info.
+            {t("warning")}
           </p>
         </div>
       </div>

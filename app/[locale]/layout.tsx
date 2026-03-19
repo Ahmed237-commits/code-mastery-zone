@@ -9,6 +9,7 @@ import { NextAuthProvider } from '../components/NextAuthProvider';
 import type { Metadata } from 'next';
 import { Outfit, Fredoka } from 'next/font/google';
 import Header from '../components/Header';
+import { initializeCourses } from '../lib/data';
 
 const outfit = Outfit({
   subsets: ['latin'],
@@ -36,6 +37,15 @@ export default async function RootLayout({
 
   if (!routing.locales.includes(locale)) {
     notFound();
+  }
+
+  // تهيئة الكورسات (مرة واحدة فقط في development)
+  if (process.env.NODE_ENV === 'development') {
+    try {
+      await initializeCourses();
+    } catch (error) {
+      console.error('Error initializing courses:', error);
+    }
   }
 
   // Use next-intl's getMessages() which correctly reads from i18n/request.ts
