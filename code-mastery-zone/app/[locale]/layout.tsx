@@ -1,3 +1,5 @@
+// app/[locale]/layout.tsx
+import { ReactNode } from 'react';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { notFound } from 'next/navigation';
@@ -7,7 +9,9 @@ import { NextAuthProvider } from '../components/NextAuthProvider';
 import type { Metadata } from 'next';
 import { Outfit, Fredoka } from 'next/font/google';
 import Header from '../components/Header';
-
+import { initializeCourses } from '../lib/data';
+import { LanguageProvider } from '@/app/components/LanguageContext'; // ✅ أضف هذا السطر
+import { EnrollProvider } from '../components/EnrollContext';
 const outfit = Outfit({
   subsets: ['latin'],
   variable: '--font-outfit',
@@ -27,27 +31,29 @@ export default async function RootLayout({
   children,
   params,
 }: {
-  children: React.ReactNode;
-  params: { locale: string };
+  children: ReactNode;
+  params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
 
-  // Ensure that the incoming `locale` is valid
-  if (!routing.locales.includes(locale as any)) {
+  if (!routing.locales.includes(locale)) {
     notFound();
   }
 
-  // Providing all messages to the client
-  // side is the easiest way to get started
+  // تهيئة الكورسات (مرة واحدة فقط في development)
+  if (process.env.NODE_ENV === 'development') {
+    try {
+      await initializeCourses();
+    } catch (error) {
+      console.error('Error initializing courses:', error);
+    }
+  }
+
+  // Use next-intl's getMessages() which correctly reads from i18n/request.ts
   const messages = await getMessages();
 
-  // Logging country for verification
-  // const headersList = headers(); // Note: headers() is async in newer Next.js versions, but here we can just skip or strictly use await headers() if we import it.
-  // For simplicity and avoiding async layout issues if not fully supported in this specific version setup without causing conflict:
-  // We will skip adding the log to avoid breaking the delicate layout build, but the header is set.
-
   return (
-    <html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'} suppressHydrationWarning className={`${outfit.variable} ${fredoka.variable}`}>
+    <html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'} className={`${outfit.variable} ${fredoka.variable}`}>
       <head>
         <link
           rel="stylesheet"
@@ -57,8 +63,13 @@ export default async function RootLayout({
       <body>
         <NextIntlClientProvider messages={messages}>
           <NextAuthProvider>
-            <Header />
-            {children}
+            {/* ✅ لف التطبيق بـ LanguageProvider */}
+            <LanguageProvider>
+              <EnrollProvider>
+                <Header />
+                {children}
+              </EnrollProvider>
+            </LanguageProvider>
           </NextAuthProvider>
         </NextIntlClientProvider>
       </body>

@@ -1,7 +1,6 @@
 import React from 'react';
 import Footer from '@/app/components/Footer';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
-
 export default async function AboutPage({ params }: { params: { locale: string } }) {
     const { locale } = await params;
     setRequestLocale(locale);
@@ -21,29 +20,12 @@ export default async function AboutPage({ params }: { params: { locale: string }
             image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?bg=202020&auto=format&fit=crop&q=80&w=400',
             bio: t('team.bios.founder'),
         },
-        {
-            name: 'Sarah Johnson',
-            role: t('team.roles.headCurriculum'),
-            image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?bg=202020&auto=format&fit=crop&q=80&w=400',
-            bio: t('team.bios.headCurriculum'),
-        },
-        {
-            name: 'Michael Chen',
-            role: t('team.roles.seniorDev'),
-            image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?bg=202020&auto=format&fit=crop&q=80&w=400',
-            bio: t('team.bios.seniorDev'),
-        },
-        {
-            name: 'Emily Davis',
-            role: t('team.roles.communityManager'),
-            image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?bg=202020&auto=format&fit=crop&q=80&w=400',
-            bio: t('team.bios.communityManager'),
-        }
     ];
 
     return (
         <>
-            <main className="bg-slate-50 overflow-hidden">
+
+            <main className="bg-slate-50 dark:bg-slate-950 overflow-hidden">
 
                 {/* Hero Section */}
                 <section className="relative pt-32 pb-20 lg:pt-40 lg:pb-32 bg-slate-900 text-white overflow-hidden">
@@ -69,20 +51,20 @@ export default async function AboutPage({ params }: { params: { locale: string }
                 {/* Stats Section */}
                 <section className="relative -mt-16 z-20">
                     <div className="container mx-auto px-6">
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 bg-white p-8 rounded-3xl shadow-xl border border-slate-100">
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 bg-white dark:bg-slate-900 p-8 rounded-3xl shadow-xl border border-slate-100 dark:border-slate-800">
                             {stats.map((stat, i) => (
                                 <div key={i} className="text-center p-4">
-                                    <div className="w-12 h-12 mx-auto rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center text-xl mb-3">
+                                    <div className="w-12 h-12 mx-auto rounded-full bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-xl mb-3">
                                         <i className={`fas ${stat.icon}`}></i>
                                     </div>
-                                    <h3 className="text-3xl font-bold text-slate-800 mb-1">{stat.value}</h3>
-                                    <p className="text-slate-500 text-sm font-medium">{stat.label}</p>
+                                    <h3 className="text-3xl font-bold text-slate-800 dark:text-white mb-1">{stat.value}</h3>
+                                    <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">{stat.label}</p>
                                 </div>
                             ))}
                         </div>
                     </div>
                 </section>
-
+                
                 {/* Story Section */}
                 <section className="py-20 md:py-32">
                     <div className="container mx-auto px-6">
@@ -95,16 +77,16 @@ export default async function AboutPage({ params }: { params: { locale: string }
                                         alt="Team working together"
                                         className="relative rounded-3xl shadow-2xl z-10 w-full"
                                     />
-                                    <div className="absolute -bottom-6 -right-6 w-24 h-24 bg-white rounded-2xl shadow-xl flex items-center justify-center z-20">
-                                        <i className="fas fa-rocket text-4xl text-indigo-600"></i>
+                                    <div className="absolute -bottom-6 -right-6 w-24 h-24 bg-white dark:bg-slate-800 rounded-2xl shadow-xl flex items-center justify-center z-20">
+                                        <i className="fas fa-rocket text-4xl text-indigo-600 dark:text-indigo-400"></i>
                                     </div>
                                 </div>
                             </div>
                             <div className="w-full lg:w-1/2">
-                                <h2 className="text-3xl md:text-4xl font-bold text-slate-800 mb-6">
+                                <h2 className="text-3xl md:text-4xl font-bold text-slate-800 dark:text-white mb-6">
                                     <span dangerouslySetInnerHTML={{ __html: t.raw('story.title') }} />
                                 </h2>
-                                <div className="space-y-6 text-slate-600 text-lg leading-relaxed">
+                                <div className="space-y-6 text-slate-600 dark:text-slate-400 text-lg leading-relaxed">
                                     <p>{t('story.p1')}</p>
                                     <p>{t('story.p2')}</p>
                                     <p>{t('story.p3')}</p>
@@ -115,25 +97,25 @@ export default async function AboutPage({ params }: { params: { locale: string }
                 </section>
 
                 {/* Values Section */}
-                <section className="py-20 bg-white">
+                <section className="py-20 bg-white dark:bg-slate-950">
                     <div className="container mx-auto px-6">
                         <div className="text-center max-w-3xl mx-auto mb-16">
-                            <h2 className="text-3xl md:text-4xl font-bold text-slate-800 mb-4">{t('values.title')}</h2>
-                            <p className="text-slate-600 text-lg">{t('values.subtitle')}</p>
+                            <h2 className="text-3xl md:text-4xl font-bold text-slate-800 dark:text-white mb-4">{t('values.title')}</h2>
+                            <p className="text-slate-600 dark:text-slate-400 text-lg">{t('values.subtitle')}</p>
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                             {[
-                                { title: t('values.fun.title'), desc: t('values.fun.desc'), icon: 'fa-gamepad', color: 'bg-pink-50 text-pink-500' },
-                                { title: t('values.quality.title'), desc: t('values.quality.desc'), icon: 'fa-award', color: 'bg-purple-50 text-purple-500' },
-                                { title: t('values.community.title'), desc: t('values.community.desc'), icon: 'fa-users', color: 'bg-indigo-50 text-indigo-500' }
+                                { title: t('values.fun.title'), desc: t('values.fun.desc'), icon: 'fa-gamepad', color: 'bg-pink-50 dark:bg-pink-900/10 text-pink-500' },
+                                { title: t('values.quality.title'), desc: t('values.quality.desc'), icon: 'fa-award', color: 'bg-purple-50 dark:bg-purple-900/10 text-purple-500' },
+                                { title: t('values.community.title'), desc: t('values.community.desc'), icon: 'fa-users', color: 'bg-indigo-50 dark:bg-indigo-900/10 text-indigo-500' }
                             ].map((value, i) => (
-                                <div key={i} className="p-8 rounded-3xl bg-slate-50 border border-slate-100 hover:shadow-lg transition-all hover:-translate-y-1">
+                                <div key={i} className="p-8 rounded-3xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 hover:shadow-lg transition-all hover:-translate-y-1">
                                     <div className={`w-14 h-14 rounded-2xl ${value.color} flex items-center justify-center text-2xl mb-6`}>
                                         <i className={`fas ${value.icon}`}></i>
                                     </div>
-                                    <h3 className="text-xl font-bold text-slate-800 mb-3">{value.title}</h3>
-                                    <p className="text-slate-600 leading-relaxed">{value.desc}</p>
+                                    <h3 className="text-xl font-bold text-slate-800 dark:text-white mb-3">{value.title}</h3>
+                                    <p className="text-slate-600 dark:text-slate-400 leading-relaxed">{value.desc}</p>
                                 </div>
                             ))}
                         </div>
@@ -144,8 +126,8 @@ export default async function AboutPage({ params }: { params: { locale: string }
                 <section className="py-20 md:py-32">
                     <div className="container mx-auto px-6">
                         <div className="text-center max-w-3xl mx-auto mb-16">
-                            <h2 className="text-3xl md:text-4xl font-bold text-slate-800 mb-4">{t('team.title')}</h2>
-                            <p className="text-slate-600 text-lg">{t('team.subtitle')}</p>
+                            <h2 className="text-3xl md:text-4xl font-bold text-slate-800 dark:text-white mb-4">{t('team.title')}</h2>
+                            <p className="text-slate-600 dark:text-slate-400 text-lg">{t('team.subtitle')}</p>
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -165,9 +147,9 @@ export default async function AboutPage({ params }: { params: { locale: string }
                                             </div>
                                         </div>
                                     </div>
-                                    <h3 className="text-xl font-bold text-slate-800">{member.name}</h3>
-                                    <p className="text-indigo-600 font-medium mb-2">{member.role}</p>
-                                    <p className="text-sm text-slate-500">{member.bio}</p>
+                                    <h3 className="text-xl font-bold text-slate-800 dark:text-white">{member.name}</h3>
+                                    <p className="text-indigo-600 dark:text-indigo-400 font-medium mb-2">{member.role}</p>
+                                    <p className="text-sm text-slate-500 dark:text-slate-400">{member.bio}</p>
                                 </div>
                             ))}
                         </div>

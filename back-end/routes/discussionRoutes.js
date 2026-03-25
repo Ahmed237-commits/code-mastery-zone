@@ -1,18 +1,31 @@
 const express = require('express');
 const router = express.Router();
-const { getDiscussions, getDiscussionById, createDiscussion, toggleLike, addComment } = require('../controllers/discussionController');
 
-router.route('/')
-    .get(getDiscussions)
-    .post(createDiscussion);
+const {
+  getDiscussions,
+  getDiscussionById,
+  createDiscussion,
+  toggleLike,
+  addComment
+} = require('../controllers/discussionController');
 
-router.route('/:id')
-    .get(getDiscussionById);
+const { protect } = require('../middleware/authmiddleware');
 
-router.route('/:id/like')
-    .put(toggleLike);
+router
+  .route('/')
+  .get(getDiscussions)
+  .post(protect, createDiscussion);
 
-router.route('/:id/comments')
-    .post(addComment);
+router
+  .route('/:id')
+  .get(getDiscussionById);
+
+router
+  .route('/:id/like')
+  .put(protect, toggleLike);
+
+router
+  .route('/:id/comments')
+  .post(protect, addComment);
 
 module.exports = router;
