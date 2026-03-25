@@ -1,0 +1,246 @@
+'use client';
+
+import React, { useState, useEffect } from 'react';
+import { Link, usePathname } from '@/i18n/routing';
+import { useSession, signOut } from 'next-auth/react';
+import { useTranslations } from 'next-intl';
+import LanguageSwitcher from './LanguageSwitcher';
+
+export default function Header() {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const { data: session } = useSession();
+  const pathname = usePathname();
+  const t = useTranslations('Header');
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const navLinks = [
+    { name: t('home'), href: '/' },
+    { name: t('courses'), href: '/courses' },
+    { name: t('community'), href: '/community' },
+    { name: t('faq'), href: '/faq' },
+    { name: t('about'), href: '/about' },
+    { name: t('contact'), href: '/contact' },
+  ];
+
+  return (
+    <header
+      className={`fixed top-0 left-0 w-full z-[9999] transition-all duration-300 border-b
+        ${isScrolled
+          ? 'bg-white/95 dark:bg-slate-900/95 backdrop-blur-md shadow-sm py-2 border-slate-200/50 dark:border-slate-800/50'
+          : 'bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-transparent py-4'
+        }`}
+    >
+      <div className="container mx-auto px-6 flex justify-between items-center">
+        {/* Logo */}
+        <Link href="/" className="flex items-center gap-3 no-underline group">
+          <div className="w-11 h-11 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center text-white text-xl shadow-lg shadow-indigo-500/20 transform -rotate-3 transition-transform group-hover:rotate-0">
+            <i className="fas fa-code"></i>
+          </div>
+          <span className="text-2xl font-bold bg-gradient-to-r from-slate-800 to-slate-900 dark:from-white dark:to-slate-200 bg-clip-text text-transparent font-['Fredoka']">
+            Code Mastrey
+          </span>
+        </Link>
+
+        {/* Desktop Nav */}
+        <nav className="hidden lg:flex items-center gap-8 bg-white/50 dark:bg-slate-800/50 px-8 py-2.5 rounded-full border border-white/60 dark:border-slate-700/60 shadow-sm backdrop-blur-sm">
+          {navLinks.map((link) => {
+            const isActive = pathname === link.href;
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={`text-[14px] font-bold px-4 py-2 rounded-xl transition-all relative group ${isActive
+                  ? 'text-indigo-600 bg-indigo-50 dark:bg-indigo-900/30'
+                  : 'text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-50 dark:hover:bg-slate-800/50'
+                  }`}
+              >
+                {link.name}
+                {isActive && (
+                  <span className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-indigo-600 rounded-full"></span>
+                )}
+              </Link>
+            );
+          })}
+        </nav>
+
+        {/* Actions */}
+        <div className="hidden lg:flex items-center gap-4">
+          <LanguageSwitcher />
+          {session ? (
+            <div className="relative">
+              <button
+                onClick={() => setIsProfileOpen(!isProfileOpen)}
+                className="flex items-center gap-2 focus:outline-none"
+              >
+                <div className="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center overflow-hidden border-2 border-indigo-500">
+                  {session.user?.image ? (
+                    <img
+                      src={session.user.image}
+                      alt={session.user.name || 'User'}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <span className="text-indigo-600 font-bold text-lg">
+                      {session.user?.name?.charAt(0) || 'U'}
+                    </span>
+                  )}
+                </div>
+              </button>
+
+              {/* Profile Dropdown */}
+              {isProfileOpen && (
+                <div className="absolute right-0 top-full mt-2 w-48 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-gray-100 dark:border-slate-700 py-2 animate-in fade-in slide-in-from-top-2">
+                  <div className="px-4 py-2 border-b border-gray-50 dark:border-slate-700">
+                    <p className="text-sm font-semibold text-slate-800 dark:text-slate-100 truncate">{session.user?.name}</p>
+                    <p className="text-xs text-slate-500 dark:text-slate-400 truncate">{session.user?.email}</p>
+                  </div>
+                  <Link
+                    href="/dashboard"
+                    onClick={() => setIsProfileOpen(false)}
+                    className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-indigo-600 transition-colors"
+                  >
+                    <i className="fas fa-chart-line mr-2"></i> {t('dashboard')}
+                  </Link>
+                  <Link
+                    href="/profile"
+                    onClick={() => setIsProfileOpen(false)}
+                    className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-indigo-600 transition-colors"
+                  >
+                    <i className="fas fa-user mr-2"></i> {t('profile')}
+                  </Link>
+                  <button
+                    onClick={() => {
+                      setIsProfileOpen(false);
+                      signOut();
+                    }}
+                    className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"
+                  >
+                    <i className="fas fa-sign-out-alt mr-2"></i> Sign Out
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <>
+              <Link href="/signIn" className="text-slate-700 font-semibold hover:text-indigo-600 transition-colors">
+                {t('signIn')}
+              </Link>
+              <Link href="/signUp" className="inline-flex items-center justify-center px-6 py-2.5 rounded-full bg-slate-900 text-white font-semibold shadow-lg shadow-slate-900/20 hover:bg-slate-800 hover:-translate-y-0.5 transition-all">
+                {t('signUp')}
+              </Link>
+            </>
+          )}
+        </div>
+
+        {/* Mobile Toggle */}
+        <button
+          className="lg:hidden text-2xl text-slate-700 dark:text-slate-200"
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+        >
+          <i className={`fas ${isMobileMenuOpen ? 'fa-times' : 'fa-bars'}`}></i>
+        </button>
+      </div>
+      {/* Mobile Menu */}
+      <div
+        className={`lg:hidden absolute top-full left-0 w-full
+  bg-white/98 dark:bg-slate-900/98 backdrop-blur-xl
+  border-b border-gray-100 dark:border-slate-800 shadow-2xl
+  transition-all duration-500
+  overflow-hidden
+  ${isMobileMenuOpen
+            ? 'max-h-[600px] opacity-100 pointer-events-auto overflow-y-auto'
+            : 'max-h-0 opacity-0 pointer-events-none'
+          }`}
+      >
+        <div className="flex flex-col p-6 space-y-3">
+          <div className="flex justify-between items-center pb-4 border-b border-gray-50 dark:border-slate-800 mb-4">
+            <LanguageSwitcher />
+          </div>
+          {navLinks.map((link) => {
+            const isActive = pathname === link.href;
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={`flex items-center justify-between px-5 py-3.5 rounded-2xl text-[17px] font-semibold transition-all duration-300 ${isActive
+                  ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-200 dark:shadow-indigo-900/20 translate-x-1'
+                  : 'text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-indigo-600 dark:hover:text-indigo-400'
+                  }`}
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                {link.name}
+                {isActive && <i className="fas fa-chevron-right text-xs"></i>}
+              </Link>
+            );
+          })}
+
+          <div className="pt-4 mt-2 space-y-3 border-t border-gray-50">
+            {session ? (
+              <>
+                <div className="flex items-center gap-4 p-4 bg-slate-50/80 rounded-2xl border border-slate-100">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center overflow-hidden shadow-md">
+                    {session.user?.image ? (
+                      <img
+                        src={session.user.image}
+                        alt={session.user.name || 'User'}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <span className="text-white font-bold text-xl">
+                        {session.user?.name?.charAt(0) || 'U'}
+                      </span>
+                    )}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="font-bold text-slate-800 truncate">{session.user?.name}</p>
+                    <p className="text-xs text-slate-500 truncate">{session.user?.email}</p>
+                  </div>
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <Link href="/dashboard" className="flex items-center justify-center gap-2 bg-white border border-slate-100 py-3 rounded-2xl text-slate-700 font-bold text-sm shadow-sm hover:bg-slate-50" onClick={() => setIsMobileMenuOpen(false)}>
+                    <i className="fas fa-chart-line text-indigo-500"></i> {t('dashboard')}
+                  </Link>
+                  <Link href="/profile" className="flex items-center justify-center gap-2 bg-white border border-slate-100 py-3 rounded-2xl text-slate-700 font-bold text-sm shadow-sm hover:bg-slate-50" onClick={() => setIsMobileMenuOpen(false)}>
+                    <i className="fas fa-user text-purple-500"></i> {t('profile')}
+                  </Link>
+                </div>
+                <button
+                  onClick={() => { setIsMobileMenuOpen(false); signOut({ callbackUrl: "/" }); }}
+                  className="w-full py-3.5 rounded-2xl bg-red-50 text-red-600 font-bold text-sm hover:bg-red-100 transition-colors flex items-center justify-center gap-2"
+                >
+                  <i className="fas fa-sign-out-alt"></i> Sign Out
+                </button>
+              </>
+            ) : (
+              <div className="flex flex-col gap-3">
+                <Link
+                  href="/signIn"
+                  className="w-full py-4 rounded-2xl bg-slate-50 text-slate-700 font-bold text-center hover:bg-slate-100 transition-colors"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  {t('signIn')}
+                </Link>
+                <Link
+                  href="/signUp"
+                  className="w-full py-4 rounded-2xl bg-indigo-600 text-white font-bold text-center shadow-lg shadow-indigo-100 hover:bg-indigo-700 transition-colors"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  {t('signUp')}
+                </Link>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </header>
+  );
+}
