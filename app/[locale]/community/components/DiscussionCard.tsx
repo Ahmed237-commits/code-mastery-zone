@@ -19,7 +19,7 @@ export default function DiscussionCard({ discussion }: DiscussionCardProps) {
   const [isLiking, setIsLiking] = useState(false);
 
   const [comments, setComments] = useState(
-    discussion.comments?.length || 0
+    discussion.comments?.length || null
   );
 
   const [showCommentInput, setShowCommentInput] = useState(false);

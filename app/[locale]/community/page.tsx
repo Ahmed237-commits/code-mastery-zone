@@ -8,8 +8,12 @@ export const metadata = {
     title: 'Community | Code Mastery Zone',
     description: 'Join our vibrant tech community, share your knowledge, and grow together.',
 };
-
-export default async function CommunityPage({ params }: { params: { locale: string } }) {
+type Props = {
+  params: Promise<{
+    locale: string;
+  }>;
+};
+export default async function CommunityPage({ params }: Props) {
     const { locale } = await params;
     setRequestLocale(locale);
     const t = await getTranslations('Community');

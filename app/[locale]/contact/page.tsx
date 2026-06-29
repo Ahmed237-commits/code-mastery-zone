@@ -6,8 +6,12 @@ export const metadata: Metadata = {
     title: 'Contact Us | Code Mastery',
     description: 'Get in touch with Code Mastery. We are here to help you with any questions or support you need.',
 };
-
-export default async function ContactPage({ params }: { params: { locale: string } }) {
+type Props = {
+  params: Promise<{
+    locale: string;
+  }>;
+};
+export default async function ContactPage({ params }: Props) {
     const { locale } = await params;
     setRequestLocale(locale);
     const t = await getTranslations('Contact');

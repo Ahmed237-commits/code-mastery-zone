@@ -8,7 +8,12 @@ import CTA from '../components/CTA';
 import Footer from '../components/Footer';
 import { setRequestLocale } from 'next-intl/server';
 import ChatBot from '../components/chatbot';
-export default async function Home({ params }: { params: { locale: string } }) {
+type Props = {
+  params: Promise<{
+    locale: string;
+  }>;
+};
+export default async function Home({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
   return (

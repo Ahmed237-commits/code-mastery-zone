@@ -1,11 +1,18 @@
 import React from 'react';
 import Footer from '@/app/components/Footer';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
-export default async function AboutPage({ params }: { params: { locale: string } }) {
-    const { locale } = await params;
-    setRequestLocale(locale);
-    const t = await getTranslations('About');
+type Props = {
+  params: Promise<{
+    locale: string;
+  }>;
+};
 
+export default async function AboutPage({ params }: Props) {
+  const { locale } = await params;
+
+  setRequestLocale(locale);
+
+  const t = await getTranslations("About");
     const stats = [
         { label: t('stats.students'), value: '10k+', icon: 'fa-users' },
         { label: t('stats.courses'), value: '50+', icon: 'fa-book-open' },
@@ -31,8 +38,8 @@ export default async function AboutPage({ params }: { params: { locale: string }
                 <section className="relative pt-32 pb-20 lg:pt-40 lg:pb-32 bg-slate-900 text-white overflow-hidden">
                     {/* Background Elements */}
                     <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0">
-                        <div className="absolute -top-[20%] -right-[10%] w-[700px] h-[700px] rounded-full bg-indigo-600/20 blur-[100px]"></div>
-                        <div className="absolute -bottom-[20%] -left-[10%] w-[500px] h-[500px] rounded-full bg-purple-600/20 blur-[100px]"></div>
+                        <div className="absolute top-[-20%] right-[-10%] w-175 h-175 rounded-full bg-indigo-600/20 blur-[100px]"></div>
+                        <div className="absolute bottom-[-20%] left-[-10%] w-125 h-125 rounded-full bg-purple-600/20 blur-[100px]"></div>
                     </div>
 
                     <div className="container mx-auto px-6 relative z-10 text-center">

@@ -44,17 +44,17 @@ export interface Course {
 export interface Discussion {
   _id: string;
   theuser: {
-    _id: string;
-    name: string;
+    _id: string | undefined;
+    name: string | null | undefined;
     avatar?: string;
   };
   title: string;
   excerpt: string;
   category: string;
   likes: number;
-  comments: number;
+  comments: number[];
   likedBy: string[];
-  createdAt: string;
+  createdAt: string | Date;
   time?: string;
 }
 
@@ -792,4 +792,107 @@ export function markLessonAsCompleted(
   totalLessons: number
 ): CourseProgress {
   return updateLessonProgress(courseId, lessonIndex, true, totalLessons);
+}// =================================================================
+// الإضافات الخاصة بالدروس والـ Progress (getCourseLessons, getLessonById, etc.)
+// =================================================================
+
+// =================================================================
+// الإضافات الكاملة والمتوافقة 100% مع صفحة عرض الدروس والـ Progress
+// =================================================================
+
+export interface Challenge {
+  instructions: string;
+  initialCode: string;
+  solution: string;
 }
+
+export interface LessonContentDetails {
+  video?: string;
+  explanation: string;
+  codeExample: string;
+  challenge?: Challenge;
+}
+
+export interface Lesson {
+  id: string;          // الـ Index الخاص بالدرس على شكل النصي
+  title: string;
+  description?: string;
+  duration?: string;   
+  order: number;       
+  content: LessonContentDetails;
+}
+
+// دالة مساعدة لتحويل مصفوفة الدروس القادمة من قاعدة البيانات للـ Structure اللي بيفهمها الـ Component
+function mapLessons(course: any): Lesson[] {
+  if (!course || !course.lessons) return [];
+  return course.lessons.map((lesson: any, index: number) => ({
+    id: index.toString(),
+    title: lesson.title,
+    description: course.description || "", 
+    duration: "10", // قيمة افتراضية لدقائق الدرس
+    order: index + 1,
+    content: {
+      video: lesson.videoUrl || "",
+      explanation: lesson.content || "",
+      codeExample: `// مثال تطبيقي لـ ${lesson.title}\nconsole.log("مرحباً بك في درس: ${lesson.title}");`,
+      challenge: {
+        instructions: "اكتب كود يقوم بطباعة نص في الـ console باستخدام console.log",
+        initialCode: '// اكتب كود الحل هنا\n',
+        solution: 'console.log("Hello World");'
+      }
+    }
+  }));
+}
+
+// جلب جميع دروس كورس معين
+export async function getCourseLessons(courseId: string): Promise<Lesson[]> {
+  try {
+    const course = await getCourseById(courseId);
+    return mapLessons(course);
+  } catch (error) {
+    console.error("Error in getCourseLessons:", error);
+    return [];
+  }
+}
+
+// جلب درس معين بناءً على الـ ID (الـ Index)
+export async function getLessonById(courseId: string, lessonId: string): Promise<Lesson | null> {
+  try {
+    const lessons = await getCourseLessons(courseId);
+    return lessons.find(l => l.id === lessonId) || null;
+  } catch (error) {
+    console.error("Error in getLessonById:", error);
+    return null;
+  }
+}
+
+// جلب الدرس التالي
+export async function getNextLesson(courseId: string, currentLessonId: string): Promise<Lesson | null> {
+  try {
+    const lessons = await getCourseLessons(courseId);
+    const currentIndex = lessons.findIndex(l => l.id === currentLessonId);
+    if (currentIndex !== -1 && currentIndex + 1 < lessons.length) {
+      return lessons[currentIndex + 1];
+    }
+    return null;
+  } catch (error) {
+    console.error("Error in getNextLesson:", error);
+    return null;
+  }
+}
+
+// جلب الدرس السابق
+export async function getPreviousLesson(courseId: string, currentLessonId: string): Promise<Lesson | null> {
+  try {
+    const lessons = await getCourseLessons(courseId);
+    const currentIndex = lessons.findIndex(l => l.id === currentLessonId);
+    if (currentIndex !== -1 && currentIndex - 1 >= 0) {
+      return lessons[currentIndex - 1];
+    }
+    return null;
+  } catch (error) {
+    console.error("Error in getPreviousLesson:", error);
+    return null;
+  }
+}
+

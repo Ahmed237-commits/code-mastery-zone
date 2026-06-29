@@ -42,10 +42,10 @@ export default function Header() {
       <div className="container mx-auto px-6 flex justify-between items-center">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-3 no-underline group">
-          <div className="w-11 h-11 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center text-white text-xl shadow-lg shadow-indigo-500/20 transform -rotate-3 transition-transform group-hover:rotate-0">
+          <div className="w-11 h-11 bg-linear-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center text-white text-xl shadow-lg shadow-indigo-500/20 transform -rotate-3 transition-transform group-hover:rotate-0">
             <i className="fas fa-code"></i>
           </div>
-          <span className="text-2xl font-bold bg-gradient-to-r from-slate-800 to-slate-900 dark:from-white dark:to-slate-200 bg-clip-text text-transparent font-['Fredoka']">
+          <span className="text-2xl font-bold bg-linear-to-r from-slate-800 to-slate-900 dark:from-white dark:to-slate-200 bg-clip-text text-transparent font-['Fredoka']">
             Code Mastrey
           </span>
         </Link>

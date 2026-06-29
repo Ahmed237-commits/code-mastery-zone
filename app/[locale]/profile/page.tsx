@@ -55,11 +55,12 @@ export default function ProfilePage() {
                 category: 'general',
                 createdAt: new Date(),
                 likes: 0,
-                comments: 0,
+                comments: [0],
                 theuser: {
                     _id: session.user?.id,
                     name: session.user?.name
-                }
+                },
+                likedBy:[]
             };
             setUserDiscussions([autoDiscussion, ...userFiltered]);
         } catch (error) {
