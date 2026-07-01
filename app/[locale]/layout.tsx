@@ -9,7 +9,7 @@ import type { Metadata } from 'next';
 import { Outfit, Fredoka } from 'next/font/google';
 import Header from '../components/Header';
 import { initializeCourses } from '../lib/data';
-
+import '../styles/global.css'
 const outfit = Outfit({
   subsets: ['latin'],
   variable: '--font-outfit',
