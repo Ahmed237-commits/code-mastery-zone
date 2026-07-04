@@ -521,6 +521,18 @@
     "saveToList": "حفظ في القائمة",
     "report": "الإبلاغ",
     "copyright": "جميع الحقوق محفوظة",
-    "level": "المستوى"
+    "level": "المستوى",
+    "availableCourses": "الكورسات المتاحة",
+    "courseDetails": "تفاصيل الكورس",
+    "Show": "عرض",
+    "Course": "كورس",
+    "Hide": "إخفاء",
+    "From:": "من:",
+    "To:": "إلى:",
+    "Available": "متاح",
+    "Student": "طالب",
+    "Students": "طلاب",
+    "Update": "تحديث",
+    "Courses":"الكورسات"
   }
 }

@@ -1,5 +1,5 @@
 // app/lib/userProgress.ts
-
+import { getSession } from "next-auth/react";
 const API_BASE_URL = "http://localhost:8000/api";
 
 export interface WatchedVideo {
@@ -32,19 +32,18 @@ const getToken = () => {
   return localStorage.getItem('token');
 };
 
-const getAuthHeaders = () => {
-  const token = getToken();
-  console.log('Token being sent:', token ? 'Present' : 'Missing');
-  
-  const headers: Record<string, string> = {
-    'Content-Type': 'application/json',
+const getAuthHeaders = async () => {
+const session = await getSession();
+
+console.log("SESSION =", session);
+console.log("ACCESS TOKEN =", session?.accessToken);
+  console.log("Session =", session);
+  console.log("Access Token =", session?.accessToken);
+
+  return {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${session?.accessToken}`,
   };
-  
-  if (token) {
-    headers['Authorization'] = `Bearer ${token}`;
-  }
-  
-  return headers;
 };
 
 // ===============================
@@ -67,7 +66,7 @@ export async function trackWatchedVideo(
 
     const res = await fetch(`${API_BASE_URL}/users/progress/track`, {
       method: 'POST',
-      headers: getAuthHeaders(),
+      headers: await getAuthHeaders(),
       body: JSON.stringify({ 
         courseId, 
         lessonId, 
@@ -76,8 +75,13 @@ export async function trackWatchedVideo(
       }),
     });
 
-    const data = await res.json();
-    
+    // const data = await res.json();
+    console.log("Status =", res.status);
+
+const text = await res.text();
+console.log("Response =", text);
+
+const data = text ? JSON.parse(text) : {};
     if (!res.ok) {
       console.error('Error response from server:', data);
       throw new Error(data.error || 'Failed to track progress');
@@ -104,7 +108,7 @@ export async function getUserProgress() {
     }
 
     const res = await fetch(`${API_BASE_URL}/users/progress`, {
-      headers: getAuthHeaders(),
+      headers: await getAuthHeaders(),
     });
 
     const data = await res.json();
@@ -132,7 +136,7 @@ export async function getLastWatched() {
     }
 
     const res = await fetch(`${API_BASE_URL}/users/progress/last`, {
-      headers: getAuthHeaders(),
+      headers: await getAuthHeaders(),
     });
 
     const data = await res.json();
@@ -164,7 +168,7 @@ export async function markLessonAsCompleted(courseId: string, lessonId: string) 
 
     const res = await fetch(`${API_BASE_URL}/users/progress/complete`, {
       method: 'PUT',
-      headers: getAuthHeaders(),
+      headers: await getAuthHeaders(),
       body: JSON.stringify({ courseId, lessonId }),
     });
 
@@ -200,7 +204,7 @@ export async function getCourseProgress(courseId: string): Promise<CourseProgres
     }
 
     const res = await fetch(`${API_BASE_URL}/users/progress/course/${courseId}`, {
-      headers: getAuthHeaders(),
+      headers:await getAuthHeaders(),
     });
 
     const data = await res.json();
@@ -241,7 +245,7 @@ export async function getEnrolledCourses() {
     }
 
     const res = await fetch(`${API_BASE_URL}/users/progress`, {
-      headers: getAuthHeaders(),
+      headers: await getAuthHeaders(),
     });
 
     const data = await res.json();

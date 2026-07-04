@@ -6,6 +6,7 @@ import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import axios from 'axios';
+import { getSession } from "next-auth/react";
 
 export default function SignInPage() {
     const router = useRouter();
@@ -22,31 +23,17 @@ export default function SignInPage() {
 
         try {
             // 1) افتح الاندبوينت في الباك إند الأول
-            const backendRes = await axios.post(
-                "http://localhost:8000/api/users/login",
-                { email, password }
-            );
-
-            console.log('Backend response:', backendRes.data);
-
-            // ✅ تأكد من وجود التوكن
-            if (!backendRes.data?.token) {
-                setError("Invalid email or password");
-                setIsLoading(false);
-                return;
-            }
-
-            // ✅✅✅ خزن التوكن في localStorage
-            localStorage.setItem('token', backendRes.data.token);
-            console.log('Token saved:', backendRes.data.token);
-
-            // 2) لو الاندبوينت رجّع البيانات بنجاح → signIn credentials
             const nextAuthRes = await signIn("credentials", {
-                email,
-                password,
-                redirect: false,
-            });
+    email,
+    password,
+    redirect: false,
+});
 
+if (nextAuthRes?.error) {
+    setError("Authentication failed");
+    setIsLoading(false);
+    return;
+}
             if (nextAuthRes?.error) {
                 setError("Authentication failed");
                 setIsLoading(false);
@@ -54,7 +41,13 @@ export default function SignInPage() {
             }
 
             // 3) نجاح → روّح الداشبورد
-            window.location.href = "/dashboard";
+const session = await getSession();
+
+console.log(session);
+            if (session) {
+                // User is authenticated, redirect to dashboard
+                window.location.href = "/dashboard";
+            }
         } catch (err) {
             console.error(err);
             setError("Login failed");

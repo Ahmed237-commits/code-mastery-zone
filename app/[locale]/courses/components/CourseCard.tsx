@@ -6,8 +6,8 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Star, Users, Clock, BookOpen, Award, Gift, ChevronLeft } from 'lucide-react';
-import { Course } from '@/app/lib/data';
-
+import { Course, localize, Locale } from '@/app/lib/data';
+import { useLocale } from 'next-intl';
 interface CourseCardProps {
   course: Course;
   variant?: 'grid' | 'list';
@@ -15,6 +15,9 @@ interface CourseCardProps {
 }
 
 export default function CourseCard({ course, variant = 'grid', t }: CourseCardProps) {
+  const locale = useLocale() as Locale;
+  console.log(locale);
+ console.log(course);
   const getTagColor = (tag?: string) => {
     const colors: Record<string, string> = {
       Programming: 'bg-blue-500/20 text-blue-300',
@@ -34,20 +37,27 @@ export default function CourseCard({ course, variant = 'grid', t }: CourseCardPr
   const whatYouWillLearn = course.whatYouWillLearn || [];
 
   const formatPrice = () => {
-    if (course.isFree) return t('details.free');
-    if (typeof course.price === 'number') {
-      return course.price === 0 ? t('details.free') : `${course.price} ${t('details.price')}`;
-    }
-    return course.price || t('details.free');
-  };
+  const price = localize(course.price, locale);
+
+  if (
+    course.isFree ||
+    price === "Free" ||
+    price === "مجاني" ||
+    price === "0"
+  ) {
+    return t("details.free");
+  }
+
+  return price;
+};
 
   if (variant === 'list') {
     return (
       <div className="bg-gray-800 rounded-xl overflow-hidden hover:transform hover:scale-[1.02] transition-all duration-300 flex flex-col md:flex-row group">
         <Link href={`/courses/${course._id}`} className="md:w-64 h-48 md:h-auto relative block overflow-hidden">
           <Image
-            src={course.image}
-            alt={course.title}
+            src='../../../the_First_Episode.png'
+            alt={localize(course.title, locale)}
             fill
             className="object-cover group-hover:scale-110 transition-transform duration-500"
           />
@@ -77,12 +87,12 @@ export default function CourseCard({ course, variant = 'grid', t }: CourseCardPr
           
           <Link href={`/courses/${course._id}`}>
             <h3 className="text-xl font-bold mb-2 hover:text-blue-400 transition-colors">
-              {course.title}
+              {localize(course.title, locale)}
             </h3>
           </Link>
-          
-          <p className="text-gray-400 mb-4 line-clamp-2">{course.description}</p>
-          
+
+          <p className="text-gray-400 mb-4 line-clamp-2">{localize(course.description, locale)}</p>
+
           <div className="flex flex-wrap items-center gap-4 mb-4 text-sm text-gray-400">
             <div className="flex items-center gap-1">
               <Users className="w-4 h-4" />
@@ -158,8 +168,8 @@ export default function CourseCard({ course, variant = 'grid', t }: CourseCardPr
     <div className="bg-gray-800 rounded-xl overflow-hidden hover:transform hover:scale-105 transition-all duration-300 group">
       <Link href={`/courses/${course._id}`} className="block relative h-48 overflow-hidden">
         <Image
-          src={course.image}
-          alt={course.title}
+          src='/the_First_Episode.png'
+          alt={localize(course.title, locale)}
           fill
           className="object-cover group-hover:scale-110 transition-transform duration-500"
         />
@@ -182,12 +192,12 @@ export default function CourseCard({ course, variant = 'grid', t }: CourseCardPr
       <div className="p-4">
         <Link href={`/courses/${course._id}`}>
           <h3 className="font-bold text-lg mb-2 hover:text-blue-400 transition-colors line-clamp-2">
-            {course.title}
+            {localize(course.title, locale)}
           </h3>
         </Link>
-        
-        <p className="text-gray-400 text-sm mb-3 line-clamp-2">{course.description}</p>
-        
+
+        <p className="text-gray-400 text-sm mb-3 line-clamp-2">{localize(course.description, locale)}</p>
+
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-1">
             <Star className="w-4 h-4 text-yellow-400 fill-current" />

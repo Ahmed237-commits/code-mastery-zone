@@ -523,6 +523,19 @@
     "saveToList": "Save to List",
     "report": "Report",
     "copyright": "All Rights Reserved",
-    "level": "Level"
+    "level": "Level",
+    "availableCourses": "Available Courses",
+    "courseDetails": "Course Details",
+    "Show":"Show",
+    "Course":"Course",
+    "Hide":"Hide",
+    "From:":"From:",
+    "To:":"To:",
+    "Available": "Available",
+    "Student": "Student",
+    "Students": "Students",
+    "Update": "Update",
+    "Courses":"Courses"
+
   }
 }

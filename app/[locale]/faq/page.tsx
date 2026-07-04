@@ -1,6 +1,5 @@
-import { getFAQs } from '@/app/lib/data';
-import { getTranslations } from 'next-intl/server';
-
+import { getLocale, getTranslations } from 'next-intl/server';
+import { getFAQs, localize, Locale } from '@/app/lib/data';
 export const metadata = {
     title: 'FAQ | Code Mastery Zone',
     description: 'Frequently asked questions about Code Mastery Zone courses and community.',
@@ -9,7 +8,7 @@ export const metadata = {
 export default async function FAQPage() {
     const faqs = await getFAQs();
     const t = await getTranslations('FAQ');
-
+const locale = (await getLocale()) as Locale;
     return (
         <main className="min-h-screen bg-slate-50 dark:bg-slate-950 pt-32 pb-20">
             <div className="container mx-auto px-6">
@@ -35,12 +34,12 @@ export default async function FAQPage() {
                                 <span className="flex-shrink-0 w-8 h-8 rounded-lg bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-sm font-bold">
                                     Q
                                 </span>
-                                {faq.question}
+{localize(faq.question, locale)}
                             </h3>
                             <div className="flex gap-4">
                                 <span className="flex-shrink-0 w-8 h-8"></span>
                                 <p className="text-gray-600 dark:text-slate-400 leading-relaxed text-lg">
-                                    {faq.answer}
+{localize(faq.answer, locale)}
                                 </p>
                             </div>
                         </div>

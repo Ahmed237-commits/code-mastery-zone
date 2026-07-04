@@ -358,7 +358,7 @@ export default function CoursesContent() {
               <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-lg rounded-full px-4 py-2 mb-6 border border-white/20">
                 <BookOpen className="w-4 h-4" />
                 <span className="text-sm font-medium">
-                  {filteredCourses.length} {filteredCourses.length === 1 ? 'كورس' : 'كورسات'} متاحة
+                  {filteredCourses.length} {filteredCourses.length === 1 ? t('Course') : t('Courses')} {t('Available')}
                 </span>
               </div>
 
@@ -373,21 +373,20 @@ export default function CoursesContent() {
               <div className="flex flex-wrap justify-center gap-6 mt-8">
                 <div className="flex items-center gap-2 bg-white/5 backdrop-blur-sm rounded-xl px-4 py-2 border border-white/10">
                   <TrendingUp className="w-5 h-5 text-green-400" />
-                  <span className="text-sm">أحدث الكورسات</span>
+                  <span className="text-sm">{t('Show')} {filteredCourses.length} {t('From:')} {courses.length} {t('Course')}</span>
                 </div>
                 <div className="flex items-center gap-2 bg-white/5 backdrop-blur-sm rounded-xl px-4 py-2 border border-white/10">
                   <Clock className="w-5 h-5 text-yellow-400" />
-                  <span className="text-sm">تحديث مستمر</span>
+                  <span className="text-sm">{t('Update')} {filteredCourses.length} {t('From:')} {courses.length} {t('Course')}</span>
                 </div>
                 <div className="flex items-center gap-2 bg-white/5 backdrop-blur-sm rounded-xl px-4 py-2 border border-white/10">
                   <Users className="w-5 h-5 text-blue-400" />
-                  <span className="text-sm">+5000 طالب</span>
+                  <span className="text-sm">+5000 {t('Student')}</span>
                 </div>
               </div>
             </div>
           </div>
         </div>
-
         {/* Main Content */}
         <div className="container mx-auto px-4 py-8">
           {/* Filter Component */}
@@ -406,13 +405,13 @@ export default function CoursesContent() {
                 {t('allCourses')}
               </h2>
               <span className="bg-gradient-to-r from-blue-600 to-purple-600 px-3 py-1 rounded-full text-sm font-medium">
-                {filteredCourses.length} {filteredCourses.length === 1 ? 'كورس' : 'كورس'}
+                {filteredCourses.length} {filteredCourses.length === 1 ? t('Course') : t('Courses')}
               </span>
             </div>
 
             <div className="flex items-center gap-4">
               <div className="hidden md:block text-sm text-gray-400">
-                عرض {filteredCourses.length} من أصل {courses.length} كورس
+                {t('Show')} {filteredCourses.length} {t('From:')} {courses.length} {t('Course')}
               </div>
 
               <div className="flex gap-2 bg-gray-800 p-1 rounded-lg">
