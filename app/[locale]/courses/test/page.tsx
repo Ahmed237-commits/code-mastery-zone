@@ -5,11 +5,13 @@
 import { useState, useEffect } from 'react';
 import { getCourses, getCourseById } from '@/app/lib/data';
 import Link from 'next/link';
-
+import { useSession } from 'next-auth/react';
 export default function TestCoursesPage() {
+  const { data: session } = useSession();
   const [courses, setCourses] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedCourse, setSelectedCourse] = useState<any>(null);
+    const token = session?.accessToken || null;
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -27,7 +29,7 @@ export default function TestCoursesPage() {
   }, []);
 
   const loadCourseDetails = async (id: string) => {
-    const course = await getCourseById(id);
+    const course = await getCourseById(id, token);
     setSelectedCourse(course);
   };
 

@@ -58,12 +58,12 @@ export default function DashboardPage() {
         let totalCompleted = 0;
         let completedCoursesCount = 0;
         let inProgressCount = 0;
-
+const token = session?.accessToken || null;
         const coursesWithProgress = await Promise.all(
           enrolled.map(async (item: EnrolledCourse) => {
-            const course = await getCourseById(item.courseId);
+            const course = await getCourseById(item.courseId, token);
             const progress = await getCourseProgress(item.courseId);
-            
+
             if (progress) {
               totalCompleted += progress.completedCount || 0;
               if (progress.percentage === 100) {
