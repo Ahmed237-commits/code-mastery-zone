@@ -11,7 +11,7 @@ import {
 import Header from '@/app/components/Header';
 import Footer from '@/app/components/Footer';
 import ChatBot from '@/app/components/chatbot';
-
+import { useSession } from 'next-auth/react';
 import {
   getCourseById,
   getCourseLessons,
@@ -39,18 +39,19 @@ export default function LessonContent() {
   const [userCode, setUserCode] = useState('');
   const [challengeOutput, setChallengeOutput] = useState('');
   const [showSolution, setShowSolution] = useState(false);
-
+const { data: session } = useSession();
   const { completeLesson, isLessonCompleted, percentage } = useCourseProgress(
     courseId, 
     lessons.length
   );
+        const token = session?.accessToken || null;
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       try {
         const [courseData, lessonsData] = await Promise.all([
-          getCourseById(courseId),
+          getCourseById(courseId , token),
           getCourseLessons(courseId)
         ]);
         
