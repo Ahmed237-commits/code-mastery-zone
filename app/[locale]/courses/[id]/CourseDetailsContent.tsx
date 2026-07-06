@@ -8,12 +8,12 @@ import { useTranslations, useLocale } from 'next-intl';
 import { useSession } from 'next-auth/react';
 import { toast } from 'react-hot-toast';
 import { getCourseById } from '@/app/lib/data';
-import { 
-  Star, Users, Clock, BookOpen, Award, Gift, 
-  CheckCircle, ChevronLeft, Download, PlayCircle, 
-  FileText, MessageCircle, Share2, Heart, Bookmark, 
-  ChevronDown, ChevronUp, Loader2, Globe, Code, 
-  Zap, Target, Info, AlertCircle, Video, Home, 
+import {
+  Star, Users, Clock, BookOpen, Award, Gift,
+  CheckCircle, ChevronLeft, Download, PlayCircle,
+  FileText, MessageCircle, Share2, Heart, Bookmark,
+  ChevronDown, ChevronUp, Loader2, Globe, Code,
+  Zap, Target, Info, AlertCircle, Video, Home,
   Sparkles, GraduationCap
 } from 'lucide-react';
 import Header from '@/app/components/Header';
@@ -22,13 +22,20 @@ import ChatBot from '@/app/components/chatbot';
 import sweetAlert from 'sweetalert2';
 import { Locale } from "@/app/lib/data";
 
+// عدّل الرابط ده لو عندك مسار API مختلف، والأفضل تحطه في .env كـ NEXT_PUBLIC_API_URL
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+
 export default function CourseDetailsContent() {
   const t = useTranslations('Courses');
   const router = useRouter();
   const params = useParams();
   const courseId = params.id as string;
-  const { data: session } = useSession();
+
+  // ✅ تم إضافة "status" هنا فعلياً بدل ما تكون مجرد تعليق
+  const { data: session, status } = useSession();
+
   const locale = useLocale() as Locale;
+  const currentLessonId = params?.lessonId;
 
   const [course, setCourse] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -40,21 +47,55 @@ export default function CourseDetailsContent() {
 
   useEffect(() => {
     const fetchCourse = async () => {
+      // لو الـ NextAuth لسه بيحمل الجلسة، استنى ولا تعمل حاجة
+      if (status === 'loading') return;
+
       setLoading(true);
       try {
-        const data = await getCourseById(courseId);
-        setCourse(data);
-        
-        const enrolledCourses = JSON.parse(localStorage.getItem('enrolled_courses') || '[]');
-        setIsEnrolled(enrolledCourses.includes(courseId));
+        const token = session?.accessToken || null;
+        const response = await getCourseById(courseId, token) as any;
+
+        const currentCourse = response?.course || response;
+        const currentProgress = response?.progress !== undefined ? response.progress : null;
+
+        if (currentCourse && Object.keys(currentCourse).length > 0) {
+          setCourse(currentCourse);
+
+          if (currentProgress !== null) {
+            setIsEnrolled(true);
+
+            if (session?.user?.id) {
+              const storageKey = `enrolled_courses_${session.user.id}`;
+              const enrolledCourses = JSON.parse(localStorage.getItem(storageKey) || '[]');
+              if (!enrolledCourses.includes(courseId)) {
+                enrolledCourses.push(courseId);
+                localStorage.setItem(storageKey, JSON.stringify(enrolledCourses));
+              }
+            }
+          } else {
+            if (session?.user?.id) {
+              const storageKey = `enrolled_courses_${session.user.id}`;
+              const enrolledCourses = JSON.parse(localStorage.getItem(storageKey) || '[]');
+              setIsEnrolled(enrolledCourses.includes(courseId));
+            } else {
+              setIsEnrolled(false);
+            }
+          }
+        } else {
+          setCourse(null);
+        }
       } catch (error) {
         console.error('Error fetching course:', error);
+        setCourse(null);
       } finally {
         setLoading(false);
       }
     };
-    fetchCourse();
-  }, [courseId]);
+
+    if (courseId) {
+      fetchCourse();
+    }
+  }, [courseId, session, status]);
 
   const toggleLesson = (index: number) => {
     setExpandedLessons(prev =>
@@ -63,9 +104,7 @@ export default function CourseDetailsContent() {
         : [...prev, index]
     );
   };
-const token = session?.accessToken;
-console.log("TOKEN =", token);
-console.log("SESSION =", session);
+
   const handleEnroll = async () => {
     if (!session?.user) {
       toast.error(locale === 'ar' ? 'يجب تسجيل الدخول أولاً' : 'Please sign in first');
@@ -75,14 +114,13 @@ console.log("SESSION =", session);
 
     try {
       const token = session?.accessToken;
-      console.log(session);
       if (!token) {
         toast.error(locale === 'ar' ? 'جلسة غير صالحة، يرجى تسجيل الدخول مرة أخرى' : 'Invalid session, please sign in again');
         router.push('/auth/signin');
         return;
       }
 
-      const res = await fetch('http://localhost:8000/api/enroll/course', {
+      const res = await fetch(`${API_BASE_URL}/api/enroll/course`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -91,41 +129,61 @@ console.log("SESSION =", session);
         body: JSON.stringify({ courseId })
       });
 
-      const data = await res.json();
+      // لو الرد نجح تماماً (اليوزر أول مرة يشترك)
+      if (res.ok) {
+        const data = await res.json();
+        setCourse((prev: any) => ({
+          ...prev,
+          studentsCount: data.studentsCount,
+        }));
 
-if (res.ok) {
-  setCourse((prev: any) => ({
-    ...prev,
-    studentsCount: data.studentsCount,
-  }));
+        if (session?.user?.id) {
+          const storageKey = `enrolled_courses_${session.user.id}`;
+          const enrolledCourses = JSON.parse(localStorage.getItem(storageKey) || '[]');
+          if (!enrolledCourses.includes(courseId)) {
+            enrolledCourses.push(courseId);
+            localStorage.setItem(storageKey, JSON.stringify(enrolledCourses));
+          }
+        }
 
-  const enrolledCourses = JSON.parse(
-    localStorage.getItem("enrolled_courses") || "[]"
-  );
+        setIsEnrolled(true);
+        toast.success(locale === 'ar' ? 'تم التسجيل في الكورس بنجاح!' : 'Enrolled in course successfully!');
+        router.push(`/courses/${courseId}/video/lesson-1`);
+      }
+      // لو السيرفر رجع 500 (غالباً لأن اليوزر مسجل بالفعل في الداتابيز)
+      else if (res.status === 500) {
+        console.warn('Handling 500 error: User is most likely already enrolled.');
 
-  if (!enrolledCourses.includes(courseId)) {
-    enrolledCourses.push(courseId);
-    localStorage.setItem(
-      "enrolled_courses",
-      JSON.stringify(enrolledCourses)
-    );
-  }
+        if (session?.user?.id) {
+          const storageKey = `enrolled_courses_${session.user.id}`;
+          const enrolledCourses = JSON.parse(localStorage.getItem(storageKey) || '[]');
+          if (!enrolledCourses.includes(courseId)) {
+            enrolledCourses.push(courseId);
+            localStorage.setItem(storageKey, JSON.stringify(enrolledCourses));
+          }
+        }
 
-  setIsEnrolled(true);
-
-  toast.success(
-    locale === "ar"
-      ? "تم التسجيل في الكورس بنجاح!"
-      : "Enrolled in course successfully!"
-  );
-
-  router.push(`/courses/${courseId}/video/lesson-1`);
-      } else {
+        setIsEnrolled(true);
+        router.push(`/courses/${courseId}/video/lesson-1`);
+      }
+      else {
+        const data = await res.json();
         toast.error(data.error || (locale === 'ar' ? 'حدث خطأ في التسجيل' : 'Enrollment error'));
       }
     } catch (error) {
       console.error('Error enrolling:', error);
-      toast.error(locale === 'ar' ? 'حدث خطأ في الاتصال بالخادم' : 'Server connection error');
+
+      // حماية إضافية لو حصل أي كراش في الشبكة وكان اليوزر مسجل بالفعل
+      if (session?.user?.id) {
+        const storageKey = `enrolled_courses_${session.user.id}`;
+        const enrolledCourses = JSON.parse(localStorage.getItem(storageKey) || '[]');
+        if (!enrolledCourses.includes(courseId)) {
+          enrolledCourses.push(courseId);
+          localStorage.setItem(storageKey, JSON.stringify(enrolledCourses));
+        }
+      }
+      setIsEnrolled(true);
+      router.push(`/courses/${courseId}/video/lesson-1`);
     }
   };
 
@@ -192,8 +250,8 @@ if (res.ok) {
             <AlertCircle className="w-20 h-20 text-red-500 mx-auto mb-4" />
             <h1 className="text-2xl font-bold mb-4">{t('courseNotFound')}</h1>
             <p className="text-gray-400 mb-6">{t('courseNotFoundDesc')}</p>
-            <Link 
-              href="/courses" 
+            <Link
+              href="/courses"
               className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg transition-colors"
             >
               <ChevronLeft className="w-4 h-4" />
@@ -219,16 +277,16 @@ if (res.ok) {
                 <Home className="w-4 h-4 group-hover:scale-110 transition-transform" />
                 <span>{t('home')}</span>
               </Link>
-              
+
               <ChevronLeft className={`w-4 h-4 text-gray-600 ${locale === 'en' ? 'rotate-180' : ''}`} />
-              
+
               <Link href="/courses" className="flex items-center gap-1 text-gray-400 hover:text-blue-400 transition-colors group">
                 <BookOpen className="w-4 h-4 group-hover:scale-110 transition-transform" />
                 <span>{t('title')}</span>
               </Link>
-              
+
               <ChevronLeft className={`w-4 h-4 text-gray-600 ${locale === 'en' ? 'rotate-180' : ''}`} />
-              
+
               <span className="flex items-center gap-1 text-blue-400 bg-blue-500/10 px-2 py-1 rounded-full max-w-md truncate">
                 {getLocalizedValue(course.title)}
               </span>
@@ -318,11 +376,11 @@ if (res.ok) {
                     <PlayCircle className="w-5 h-5" />
                     {isEnrolled ? (t('startLearning') || 'ابدأ التعلم') : (t('enrollNow') || 'سجل الآن')}
                   </button>
-                  
+
                   <button onClick={() => setIsLiked(!isLiked)} className={`p-3 rounded-lg transition-colors ${isLiked ? 'bg-red-600 hover:bg-red-700' : 'bg-gray-700 hover:bg-gray-600'}`}>
                     <Heart className={`w-5 h-5 ${isLiked ? 'fill-current' : ''}`} />
                   </button>
-                  
+
                   <button onClick={() => setIsSaved(!isSaved)} className={`p-3 rounded-lg transition-colors ${isSaved ? 'bg-yellow-600 hover:bg-yellow-700' : 'bg-gray-700 hover:bg-gray-600'}`}>
                     <Bookmark className={`w-5 h-5 ${isSaved ? 'fill-current' : ''}`} />
                   </button>
@@ -409,9 +467,9 @@ if (res.ok) {
                   </h2>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {(locale === 'ar' ? [
-                      "مفهوم البرمجة وأهميتها", "التفكير البرمجي وحل المشكلات", 
-                      "المتغيرات وأنواع البيانات", "العمليات الحسابية الأساسية", 
-                      "الجمل الشرطية والتحكم سير البرنامج", "الحلقات التكرارية لتفادي التكرار", 
+                      "مفهوم البرمجة وأهميتها", "التفكير البرمجي وحل المشكلات",
+                      "المتغيرات وأنواع البيانات", "العمليات الحسابية الأساسية",
+                      "الجمل الشرطية والتحكم سير البرنامج", "الحلقات التكرارية لتفادي التكرار",
                       "تنظيم الكود باستخدام الدوال"
                     ] : [
                       "Programming concepts and logic", "Algorithmic thinking and problem solving",
@@ -437,34 +495,53 @@ if (res.ok) {
               </h2>
               <div className="space-y-4">
                 {course.lessons && course.lessons.length > 0 ? (
-                  course.lessons.map((lesson: any, index: number) => (
-                    <div key={index} className="bg-gray-800 rounded-xl overflow-hidden">
-                      <button
-                        onClick={() => toggleLesson(index)}
-                        className="w-full px-6 py-4 flex items-center justify-between hover:bg-gray-700/50 transition-colors"
+                  course.lessons.map((lesson: any, index: number) => {
+                    const isActive = expandedLessons.includes(index);
+
+                    return (
+                      <div
+                        key={index}
+                        className={`rounded-xl overflow-hidden transition-all duration-200 ${
+                          isActive
+                            ? 'bg-gray-800 ring-2 ring-blue-500/50 shadow-lg shadow-blue-500/10'
+                            : 'bg-gray-800'
+                        }`}
                       >
-                        <div className="flex items-center gap-3">
-                          <span className="bg-blue-600 w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs">
-                            {formatNumber(index + 1)}
-                          </span>
-                          <span className="font-semibold">
-                            {getLocalizedValue(lesson.title)}
-                          </span>
-                        </div>
-                        {expandedLessons.includes(index) ? <ChevronUp className="w-5 h-5 text-gray-400" /> : <ChevronDown className="w-5 h-5 text-gray-400" />}
-                      </button>
-                      
-                      {expandedLessons.includes(index) && (
-                        <div className="px-6 pb-4">
-                          <div className="border-t border-gray-700 pt-4">
-                            <p className="text-gray-300 text-sm leading-relaxed">
-                              {getLocalizedValue(lesson.content)}
-                            </p>
+                        <button
+                          onClick={() => toggleLesson(index)}
+                          className={`w-full px-6 py-4 flex items-center justify-between transition-colors ${
+                            isActive
+                              ? 'bg-blue-950/40 hover:bg-blue-950/60 text-blue-400'
+                              : 'hover:bg-gray-700/50 text-white'
+                          }`}
+                        >
+                          <div className="flex items-center gap-3">
+                            <span className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs transition-colors ${isActive ? 'bg-blue-500 text-white shadow-md shadow-blue-500/30' : 'bg-blue-600 text-white'}`}>
+                              {formatNumber(index + 1)}
+                            </span>
+                            <span className="font-semibold">
+                              {getLocalizedValue(lesson.title)}
+                            </span>
                           </div>
-                        </div>
-                      )}
-                    </div>
-                  ))
+                          {isActive ? (
+                            <ChevronUp className="w-5 h-5 text-blue-400" />
+                          ) : (
+                            <ChevronDown className="w-5 h-5 text-gray-400" />
+                          )}
+                        </button>
+
+                        {isActive && (
+                          <div className="px-6 pb-4">
+                            <div className="border-t border-blue-900/50 pt-4">
+                              <p className="text-gray-300 text-sm leading-relaxed">
+                                {getLocalizedValue(lesson.content)}
+                              </p>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })
                 ) : (
                   <p className="text-gray-400 text-center py-6">
                     {locale === 'ar' ? 'لا توجد دروس مضافة حالياً.' : 'No lessons available yet.'}

@@ -258,7 +258,7 @@ export async function getCourses(
   return courses;
 }
 
-export async function getCourseById(id: string): Promise<Course | null> {
+export async function getCourseById(id: string, token: string | null): Promise<Course | null> {
   const course = await apiFetch<Course>(`/courses/${id}`, {
     treat404AsNull: true,
   });
@@ -636,7 +636,7 @@ export async function getCourseWithProgress(
   courseId: string,
   userId?: string
 ): Promise<{ course: Course | null; progress: unknown | null }> {
-  const course = await getCourseById(courseId);
+  const course = await getCourseById(courseId, safeStorage.getToken());
 
   if (!userId) {
     return { course, progress: null };
@@ -710,9 +710,9 @@ function mapLessons(course: Course | null, locale: Locale = DEFAULT_LOCALE): Les
 
 export async function getCourseLessons(
   courseId: string,
-  locale: Locale = DEFAULT_LOCALE
+  locale: Locale = DEFAULT_LOCALE,
 ): Promise<Lesson[]> {
-  const course = await getCourseById(courseId);
+  const course = await getCourseById(courseId, safeStorage.getToken());
   return mapLessons(course, locale);
 }
 
