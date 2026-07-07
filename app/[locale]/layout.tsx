@@ -34,9 +34,9 @@ export default async function RootLayout({
 }) {
   const { locale } = await params;
 
-  if (!routing.locales.includes(locale)) {
-    notFound();
-  }
+  if (!routing.locales.includes(locale as (typeof routing.locales)[number])) {
+  notFound();
+}
 
   // تهيئة الكورسات (مرة واحدة فقط في development)
   if (process.env.NODE_ENV === 'development') {
