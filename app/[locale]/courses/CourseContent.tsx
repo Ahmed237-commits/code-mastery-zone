@@ -3,7 +3,8 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter, usePathname } from '@/i18n/routing';
+import { useSearchParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import MonacoEditor from '@monaco-editor/react';
@@ -14,6 +15,7 @@ import {
   FileText, Save, Plus, Trash2, Download, Upload, 
   FolderOpen, Eye, EyeOff, Play, Terminal, Copy, X
 } from 'lucide-react';
+import { useLocale } from 'next-intl';
 import Header from '@/app/components/Header';
 import Footer from '@/app/components/Footer';
 import ChatBot from '@/app/components/chatbot';
@@ -46,7 +48,9 @@ const LANGUAGE_OPTIONS = [
 
 export default function CoursesContent() {
   const t = useTranslations('Courses');
-  const router = useRouter();
+const router = useRouter();
+const pathname = usePathname();
+const locale = useLocale();
   const searchParams = useSearchParams();
   
   const [courses, setCourses] = useState<any[]>([]);
@@ -206,7 +210,6 @@ export default function CoursesContent() {
     };
     fetchData();
   }, []);
-
   // فلترة وترتيب الكورسات
   useEffect(() => {
     let filtered = [...courses];
@@ -259,8 +262,15 @@ export default function CoursesContent() {
     if (filters.category !== 'all') params.set('category', filters.category);
     if (filters.level !== 'all') params.set('level', filters.level);
     if (filters.sortBy !== 'popular') params.set('sortBy', filters.sortBy);
-    
-    router.push(`/courses?${params.toString()}`, { scroll: false });
+    router.replace(
+  {
+    pathname,
+    query: Object.fromEntries(params.entries())
+  },
+  {
+    locale
+  }
+);
 
   }, [filters, courses, router]);
 
