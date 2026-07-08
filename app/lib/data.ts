@@ -168,7 +168,7 @@ async function apiFetch<T>(
   path: string,
   { treat404AsNull = false, headers, ...init }: ApiFetchOptions = {}
 ): Promise<T | null> {
-  const url = `${API_BASE_URL}${path}`;
+  const url = `${API_BASE_URL}/api${path}`;
 
   try {
     const res = await fetch(url, {
