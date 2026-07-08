@@ -23,6 +23,7 @@ export default function ChatBot() {
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { data: session } = useSession();
+ const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
   const t = useTranslations('ChatBot');
   const scrollToBottom = () =>
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -47,7 +48,7 @@ export default function ChatBot() {
     setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:8000/chat", {
+      const res = await fetch(`${API_BASE_URL}/chat`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: userText }),

@@ -485,7 +485,7 @@ const locale = useLocale();
                   <div className="flex-1 flex items-center justify-center">
                     <div className="bg-gray-600 rounded-full px-4 py-1 text-xs text-gray-300 flex items-center gap-2 max-w-md mx-auto">
                       <span className="w-2 h-2 bg-green-400 rounded-full"></span>
-                      <span className="truncate">localhost:3000/editor/{fileName}</span>
+                      <span className="truncate">{fileName}</span>
                     </div>
                   </div>
                   

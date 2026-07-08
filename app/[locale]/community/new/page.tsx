@@ -12,7 +12,7 @@ export default function NewDiscussionPage() {
     const [tags, setTags] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
-
+    const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
     const categories = [
         { id: 'general', label: t('categories.general'), icon: '💬', description: t('categoryDescriptions.general') },
         { id: 'help', label: t('categories.help'), icon: '🆘', description: t('categoryDescriptions.help') },
@@ -26,7 +26,7 @@ export default function NewDiscussionPage() {
         setIsSubmitting(true);
 
         try {
-            const res = await fetch('http://localhost:8000/api/discussions', {
+            const res = await fetch(`${API_BASE_URL}/api/discussions`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

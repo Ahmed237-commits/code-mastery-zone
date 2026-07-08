@@ -10,6 +10,7 @@ import axios from 'axios';
 export default function SignUpPage() {
     const router = useRouter();
     const t = useTranslations('SignUp');
+    const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -29,7 +30,7 @@ export default function SignUpPage() {
         try {
           // 1) افتح الاندبوينت في الباك إند الأول
           const backendRes = await axios.post(
-            "http://localhost:8000/api/users",
+            `${API_BASE_URL}/api/users`,
             { name: formData.name, email: formData.email, password: formData.password, confirmPassword: formData.confirmPassword }
           );
           console.log(backendRes.data);

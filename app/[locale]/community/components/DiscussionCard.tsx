@@ -17,7 +17,7 @@ export default function DiscussionCard({ discussion }: DiscussionCardProps) {
   const [likes, setLikes] = useState(discussion.likes || 0);
   const [liked, setLiked] = useState(false);
   const [isLiking, setIsLiking] = useState(false);
-
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
   const [comments, setComments] = useState(
     discussion.comments?.length || null
   );
@@ -44,7 +44,7 @@ export default function DiscussionCard({ discussion }: DiscussionCardProps) {
     try {
 
       const res = await fetch(
-        `http://localhost:8000/api/discussions/${discussion._id}/like`,
+        `${API_BASE_URL}/api/discussions/${discussion._id}/like`,
         {
           method: "PUT",
           headers: {
@@ -90,7 +90,7 @@ export default function DiscussionCard({ discussion }: DiscussionCardProps) {
     try {
 
       const res = await fetch(
-        `http://localhost:8000/api/discussions/${discussion._id}/comments`,
+        `${API_BASE_URL}/api/discussions/${discussion._id}/comments`,
         {
           method: "POST",
           headers: {
